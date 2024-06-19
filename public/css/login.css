@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #ffffff; /* Fondo blanco */
+    color: #1f2937; /* Color del texto principal */
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #FFF5F5; /* Color 2: rosa muy claro */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 80%;
+    max-width: 1200px;
+    box-sizing: border-box;
+}
+
+.login-image {
+    flex: 1;
+    text-align: center;
+    padding: 20px;
+}
+
+.login-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    border: 2px solid #FFD5D5; /* Borde de la imagen usando el color 4: rosa */
+}
+
+.login-form {
+    flex: 1;
+    padding: 40px;
+    background-color: #ffffff; /* Fondo blanco */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.login-form h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #FFB5B5; /* Color 5: rosa fuerte */
+}
+
+.login-form p {
+    margin-bottom: 30px;
+    color: #4b5563;
+    text-align: center;
+}
+
+.login-form .checkbox {
+    display: flex;
+    align-items: center;
+}
+
+.login-form .checkbox label {
+    margin-left: 10px;
+    color: #4b5563;
+}
+
+.login-form .button-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.login-form .button-group a {
+    color: #FFB5B5; /* Color 5: rosa fuerte */
+}
+
+.login-form .button-group button {
+    background-color: #0080ff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.login-form .button-group button:hover {
+    background-color: #005bb5;
+}

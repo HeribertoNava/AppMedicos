@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+}
+
+/* Ajustar la barra de navegación con los colores de la paleta */
+.navbar {
+    background-color: #D6D6E8; /* Color 1: lila claro */
+    padding: 1rem; /* Añadir un poco de padding */
+}
+
+.navbar a {
+    color: #FFF5F5; /* Color 2: rosa muy claro */
+    text-decoration: none;
+    margin: 0 1rem;
+    font-weight: 500; /* Peso de la fuente medio */
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.navbar .hover\\:text-gray-300:hover {
+    color: #000000; /* Color negro al hacer hover */
+}
+
+.navbar a:focus {
+    outline: none;
+    border-bottom: 2px solid #FFE5E5; /* Color 3: rosa claro */
+}
