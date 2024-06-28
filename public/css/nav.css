@@ -1,38 +1,105 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
-
+/* General Styles */
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f9;
+    font-family: "Figtree", sans-serif;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
-/* Ajustar la barra de navegación con los colores de la paleta */
+/* Navbar Styles */
 .navbar {
-    background-color: #D6D6E8; /* Color 1: lila claro */
-    padding: 1rem; /* Añadir un poco de padding */
+    background: linear-gradient(
+        135deg,
+        #008080,
+        #004c4c
+    ); /* Gradient background */
+    color: white;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 10;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease; /* Animation for sliding effect */
 }
 
 .navbar a {
-    color: #000000; /* Color 2: rosa muy claro */
+    color: white;
     text-decoration: none;
-    margin: auto;
-    font-weight: 500; /* Peso de la fuente medio */
-    transition: color 0.3s ease, background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Animation for hover effect */
 }
 
 .navbar a:hover {
-    color: #FFD5D5; /* Color 4: rosa */
-    background-color: #FFF5F5; /* Color 2: rosa muy claro */
-    padding: 0.5rem; /* Añadir padding en hover */
-    border-radius: 0.25rem; /* Añadir bordes redondeados en hover */
+    background-color: rgba(
+        0,
+        102,
+        102,
+        0.8
+    ); /* Slightly transparent hover effect */
+    transform: translateX(10px); /* Move link slightly on hover */
 }
 
-.navbar a:active {
-    color: #FFB5B5; /* Color 5: rosa fuerte */
+.navbar .logo {
+    text-align: center;
+    margin: 20px 0;
 }
 
-.navbar a:focus {
-    outline: none;
-    border-bottom: 2px solid #FFE5E5; /* Color 3: rosa claro */
+.navbar .logo img {
+    max-width: 120px;
+    transition: transform 0.3s ease; /* Animation for logo hover effect */
+}
+
+.navbar .logo img:hover {
+    transform: scale(1.1); /* Slight zoom on hover */
+}
+
+.navbar .nav-items {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.navbar .nav-items a {
+    margin-bottom: 10px;
+}
+
+.navbar .user-info {
+    border-top: 1px solid rgba(255, 255, 255, 0.2); /* Semi-transparent border */
+    padding: 20px 10px;
+    text-align: center;
+}
+
+.navbar .user-info .user-name {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.navbar .user-info .user-email {
+    font-size: 12px;
+    color: #d9d9d9; /* Lighter font color for email */
+}
+
+.navbar .user-info a {
+    display: block;
+    margin-top: 10px;
+    color: #00cccc; /* Link color */
+    font-weight: bold;
+    transition: color 0.3s ease; /* Animation for link color change */
+}
+
+.navbar .user-info a:hover {
+    color: #66ffff; /* Lighter color on hover */
+}
+
+.main-content {
+    margin-left: 100px; /* Align with navbar width */
+    padding: 30px;
 }

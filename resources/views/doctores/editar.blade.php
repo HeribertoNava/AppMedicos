@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<form class="max-w-sm mx-auto bg-white p-6 rounded-lg shadow-md" method="POST" action="{{ route('doctores.actualizar', $doctor->id) }}">
+<<form class="p-6 mx-auto bg-white rounded-lg shadow-md" method="POST" action="{{ route('doctores.actualizar', $doctor->id) }}" style="width: 500px; height: 650px;">
+    <div class="p-6 bg-white rounded-lg shadow-lg dark:bg-gray-800" style="width: 450px; height: 610px;">
     @csrf
     @method('PUT')
     <!-- Nombres -->
@@ -41,5 +42,6 @@
     </div>
 
     <button type="submit" class="text-white bg-pink-600 hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Actualizar</button>
+    </div>
 </form>
 @endsection
