@@ -1,6 +1,5 @@
 <link rel="stylesheet" href="{{ asset('css/nav.css') }}">
-<nav x-data="{ open: false }" class="fixed inset-y-0 left-0 flex flex-col justify-between w-64 text-white shadow-lg bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600">
-    <!-- Logo -->
+<nav x-data="{ open: false }" class="navbar">
     <div class="flex items-center justify-center h-16 border-b border-gray-200">
         <a href="{{ route('dashboard') }}">
             <x-application-logo class="block w-auto h-auto text-white fill-current" />
