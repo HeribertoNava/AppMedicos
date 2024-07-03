@@ -11,7 +11,7 @@ body {
     background: linear-gradient(
         135deg,
         #ffe5ec,
-        /* Lightest pink */ #fb6f92 /* Darkest pink */
+        #fb6f92
     ); /* Gradient background */
     color: white;
     height: 100vh;
@@ -33,6 +33,7 @@ body {
     display: flex;
     align-items: center;
     padding: 15px 20px;
+    border-radius: 50px; /* Oval shape */
     transition: background-color 0.3s ease, transform 0.3s ease; /* Animation for hover effect */
 }
 

@@ -2,16 +2,16 @@
 
 @section('content')
 <!-- Botón para agendar una nueva cita -->
-<a href="{{ route('citas.crear') }}" class="text-black bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" style="background-color: #daffef; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#247b7b'" onmouseout="this.style.backgroundColor='#daffef'">
+<a href="{{ route('citas.crear') }}" class="px-4 py-2 text-sm font-medium text-center text-black bg-[#FFE5EC] rounded-lg hover:bg-[#FFC2D1] focus:ring-4 focus:outline-none focus:ring-[#FFB3C6] transition duration-300">
     Agendar Cita
 </a>
 
 <!-- Componente del calendario -->
-<div class="bg-gray-100 flex items-center justify-center min-h-screen py-8">
-    <div class="lg:w-10/12 md:w-11/12 sm:w-full mx-auto p-4">
-        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+<div class="flex items-center justify-center min-h-screen py-8 bg-gray-100">
+    <div class="p-4 mx-auto lg:w-10/12 md:w-11/12 sm:w-full">
+        <div class="overflow-hidden bg-white rounded-lg shadow-lg">
             <!-- Encabezado del calendario con controles para cambiar de mes -->
-            <div class="flex items-center justify-between px-6 py-3 bg-gray-700 text-white">
+            <div class="flex items-center justify-between px-6 py-3 text-white bg-gray-700">
                 <button id="prevMonth" class="focus:outline-none">Anterior</button>
                 <h2 id="currentMonth" class="text-xl font-bold"></h2>
                 <button id="nextMonth" class="focus:outline-none">Siguiente</button>
@@ -25,16 +25,16 @@
 </div>
 
 <!-- Modal para mostrar detalles de la cita seleccionada -->
-<div id="myModal" class="modal hidden fixed inset-0 flex items-center justify-center z-50">
-    <div class="modal-overlay absolute inset-0 bg-black opacity-50"></div>
-    <div class="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
-        <div class="modal-content py-4 text-left px-6">
-            <div class="flex justify-between items-center pb-3">
+<div id="myModal" class="fixed inset-0 z-50 flex items-center justify-center hidden modal">
+    <div class="absolute inset-0 bg-black opacity-50 modal-overlay"></div>
+    <div class="z-50 w-11/12 mx-auto overflow-y-auto bg-white rounded shadow-lg modal-container md:max-w-md">
+        <div class="px-6 py-4 text-left modal-content">
+            <div class="flex items-center justify-between pb-3">
                 <p class="text-2xl font-bold">Día seleccionado</p>
-                <button id="closeModal" class="modal-close px-3 py-1 rounded-full bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring">✕</button>
+                <button id="closeModal" class="px-3 py-1 bg-gray-200 rounded-full modal-close hover:bg-gray-300 focus:outline-none focus:ring">✕</button>
             </div>
             <div id="modalDate" class="text-xl font-semibold"></div>
-            <div id="modalDetails" class="text-md mt-2"></div>
+            <div id="modalDetails" class="mt-2 text-md"></div>
         </div>
     </div>
 </div>
