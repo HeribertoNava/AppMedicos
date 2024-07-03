@@ -51,12 +51,12 @@
     function generateCalendar(year, month) {
         const calendarElement = document.getElementById('calendar');
         const currentMonthElement = document.getElementById('currentMonth');
-        
+
         // Crear un objeto de fecha para el primer día del mes especificado
         const firstDayOfMonth = new Date(year, month, 1);
         // Obtener el número de días en el mes especificado
         const daysInMonth = new Date(year, month + 1, 0).getDate();
-        
+
         // Limpiar el contenido del calendario
         calendarElement.innerHTML = '';
 
@@ -64,7 +64,7 @@
         const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         // Mostrar el mes y año actuales en el encabezado
         currentMonthElement.innerText = `${monthNames[month]} ${year}`;
-        
+
         // Obtener el día de la semana del primer día del mes (0-6, donde 0 es domingo y 6 es sábado)
         const firstDayOfWeek = firstDayOfMonth.getDay();
 

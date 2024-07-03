@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="{{ asset('css/nav.css') }}">
-<nav x-data="{ open: false }" class="fixed inset-y-0 left-0 flex flex-col justify-between w-64 text-white shadow-lg bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600">
+<nav x-data="{ open: false }" class="navbar">
     <!-- Logo -->
     <div class="flex items-center justify-center h-16 border-b border-gray-200">
         <a href="{{ route('dashboard') }}">
@@ -36,7 +36,7 @@
     <div class="mb-4">
         <x-dropdown width="48" >
             <x-slot name="trigger">
-                <button class="flex items-center w-full px-4 py-2 text-sm font-medium leading-5 text-left text-white transition duration-150 ease-in-out bg-pink-600 border border-transparent rounded-lg hover:bg-pink-700 focus:outline-none">
+                <button class="flex items-center justify-center w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-white transition duration-150 ease-in-out bg-[#FF8FAB] border border-transparent rounded-lg hover:bg-[#FB6F92] focus:outline-none">
                     <span>{{ Auth::user()->name }}</span>
                     <svg class="w-5 h-5 ml-auto" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -112,6 +112,9 @@
 </div>
 
 <!-- Content Wrapper -->
-<div class="main-content">
-    @yield('content')
+
+<div class="flex-1 p-6 ml-64 main-content md:ml-200">
+    <div class="main-content">
+        @yield('content')
+    </div>
 </div>

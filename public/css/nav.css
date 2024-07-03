@@ -10,8 +10,8 @@ body {
 .navbar {
     background: linear-gradient(
         135deg,
-        #008080,
-        #004c4c
+        #ffe5ec,
+        /* Lightest pink */ #fb6f92 /* Darkest pink */
     ); /* Gradient background */
     color: white;
     height: 100vh;
@@ -28,7 +28,7 @@ body {
 }
 
 .navbar a {
-    color: white;
+    color: black;
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -38,11 +38,11 @@ body {
 
 .navbar a:hover {
     background-color: rgba(
-        0,
-        102,
-        102,
+        251,
+        111,
+        146,
         0.8
-    ); /* Slightly transparent hover effect */
+    ); /* Slightly transparent hover effect using the darkest pink */
     transform: translateX(10px); /* Move link slightly on hover */
 }
 
@@ -90,13 +90,13 @@ body {
 .navbar .user-info a {
     display: block;
     margin-top: 10px;
-    color: #00cccc; /* Link color */
+    color: #ff8fab; /* Link color using one of the pink shades */
     font-weight: bold;
     transition: color 0.3s ease; /* Animation for link color change */
 }
 
 .navbar .user-info a:hover {
-    color: #66ffff; /* Lighter color on hover */
+    color: #ffc2d1; /* Lighter color on hover */
 }
 
 .main-content {
