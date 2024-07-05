@@ -31,7 +31,9 @@
         <x-nav-link :href="route('citas.index')" :active="request()->routeIs('citas.index')" class="px-4 py-2 text-white hover:text-gray-200 hover:bg-pink-600">
             {{ __('Citas') }}
         </x-nav-link>
-
+        <x-nav-link :href="route('usuarios.index')" :active="request()->routeIs('usuarios.index')" class="px-4 py-2 text-white hover:text-gray-200 hover:bg-pink-600">
+            {{ __('Usuarios') }}
+        </x-nav-link>
 
     <!-- Settings Dropdown -->
     <div class="mb-4">
