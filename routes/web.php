@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DoctoresController;
@@ -8,6 +9,9 @@ use App\Http\Controllers\ServiciosController;
 use App\Http\Controllers\ProductosController;
 use App\Http\Controllers\SecretariasController;
 use App\Http\Controllers\CitasController;
+use App\Http\Controllers\FullCalendarController;
+
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -70,6 +74,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/citas/{secretaria}/editar', [CitasController::class, 'editar'])->name('citas.editar');
     Route::put('/citas/{secretaria}', [CitasController::class, 'actualizar'])->name('citas.actualizar');
     Route::delete('/citas/{secretaria}', [CitasController::class, 'eliminar'])->name('citas.eliminar');
+
+
 });
 
 require __DIR__ . '/auth.php';
