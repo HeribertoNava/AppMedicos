@@ -2,10 +2,11 @@
 <nav x-data="{ open: false }" class="navbar">
     <!-- Logo -->
     <div class="flex items-center justify-center h-16 border-b border-gray-200">
-        <a href="{{ route('dashboard') }}">
-            <x-application-logo class="block w-auto h-auto text-white fill-current" />
+        <a href="{{ route('dashboard') }}" class="logo">
+            <x-application-logo class="block text-white fill-current w-128 h-128" />
         </a>
     </div>
+
 
     <!-- Navigation Links -->
     <div class="flex flex-col flex-grow mt-8 space-y-2">
@@ -30,7 +31,9 @@
         <x-nav-link :href="route('citas.index')" :active="request()->routeIs('citas.index')" class="px-4 py-2 text-white hover:text-gray-200 hover:bg-pink-600">
             {{ __('Citas') }}
         </x-nav-link>
-
+        <x-nav-link :href="route('usuarios.index')" :active="request()->routeIs('usuarios.index')" class="px-4 py-2 text-white hover:text-gray-200 hover:bg-pink-600">
+            {{ __('Usuarios') }}
+        </x-nav-link>
 
     <!-- Settings Dropdown -->
     <div class="mb-4">

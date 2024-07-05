@@ -1,5 +1,4 @@
 <?php
-
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DoctoresController;
@@ -8,6 +7,8 @@ use App\Http\Controllers\ServiciosController;
 use App\Http\Controllers\ProductosController;
 use App\Http\Controllers\SecretariasController;
 use App\Http\Controllers\CitasController;
+use App\Http\Controllers\UsuarioController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -70,6 +71,24 @@ Route::middleware('auth')->group(function () {
     Route::get('/citas/{secretaria}/editar', [CitasController::class, 'editar'])->name('citas.editar');
     Route::put('/citas/{secretaria}', [CitasController::class, 'actualizar'])->name('citas.actualizar');
     Route::delete('/citas/{secretaria}', [CitasController::class, 'eliminar'])->name('citas.eliminar');
+
+
+    //Ruta para usuarios
+
+    Route::get('usuarios', [UsuarioController::class, 'index'])->name('usuarios.index');
+    // Mostrar el formulario para crear un nuevo usuario
+    Route::get('usuarios/create', [UsuarioController::class, 'create'])->name('usuarios.create');
+    // Almacenar un nuevo usuario
+    Route::post('usuarios', [UsuarioController::class, 'store'])->name('usuarios.store');
+    // Mostrar un usuario específico
+    Route::get('usuarios/{usuario}', [UsuarioController::class, 'show'])->name('usuarios.show');
+    // Mostrar el formulario para editar un usuario específico
+    Route::get('usuarios/{usuario}/edit', [UsuarioController::class, 'edit'])->name('usuarios.edit');
+    // Actualizar un usuario específico
+    Route::put('usuarios/{usuario}', [UsuarioController::class, 'update'])->name('usuarios.update');
+    // Eliminar un usuario específico
+    Route::delete('usuarios/{usuario}', [UsuarioController::class, 'destroy'])->name('usuarios.destroy');
+
 });
 
 require __DIR__ . '/auth.php';
