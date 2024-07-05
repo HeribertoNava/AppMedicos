@@ -22,6 +22,7 @@ class CitasController extends Controller
         $pacientes = Pacientes::all();
         $doctores = Doctores::all();
         return view('citas.crear', compact('pacientes', 'doctores'));
+        
     }
 
     public function store(Request $request)
