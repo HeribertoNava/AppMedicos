@@ -4,10 +4,9 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User
 {
     use HasFactory, Notifiable;
 
@@ -37,18 +36,7 @@ class User extends Authenticatable
     }
 
     // Métodos para verificar roles
-    public function isAdmin()
-    {
-        return $this->role === 'admin';
-    }
 
-    public function isDoctor()
-    {
-        return $this->role === 'doctor';
-    }
 
-    public function isSecretary()
-    {
-        return $this->role === 'secretaria';
-    }
+
 }

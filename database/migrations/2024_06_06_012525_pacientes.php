@@ -15,8 +15,8 @@ return new class extends Migration
             $table->string('correo')->unique();
             $table->string('password');
             $table->bigInteger('telefono');
-            $table->string('direccion');
-            $table->integer('edad');
+            $table->string('direccion')->nullable();;
+            $table->integer('edad')->nullable();;
             $table->rememberToken();
             $table->timestamps();
         });

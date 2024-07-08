@@ -8,7 +8,7 @@
             <div class="flex justify-center mb-4">
                 <img src="images/logo.png" alt="Descripción de la imagen" class="w-32 h-32 object-cover rounded-full shadow-md">
             </div>
-            
+
             <h2 class="text-3xl font-bold text-center">LOGIN</h2>
             <form method="POST" action="{{ route('login') }}" class="mt-4">
                 @csrf

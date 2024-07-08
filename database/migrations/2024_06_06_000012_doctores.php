@@ -15,8 +15,8 @@ return new class extends Migration
             $table->string('correo')->unique();
             $table->string('password');
             $table->bigInteger('telefono');
-            $table->string('especialidad');
-            $table->integer('consultorio');
+            $table->string('especialidad')->nullable();;
+            $table->integer('consultorio')->nullable();;
             $table->rememberToken();
             $table->timestamps();
         });

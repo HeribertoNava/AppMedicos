@@ -8,11 +8,13 @@
     </div>
 
 
-    <!-- Navigation Links -->
     <div class="flex flex-col flex-grow mt-8 space-y-2">
         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="px-4 py-2 text-white hover:text-gray-200 hover:bg-pink-600">
             {{ __('Dashboard') }}
         </x-nav-link>
+
+    <!-- Navigation Links -->
+@if (Auth::user()->hasRole('Doctor'))
         <x-nav-link :href="route('doctores.index')" :active="request()->routeIs('doctores.index')" class="px-4 py-2 text-white hover:text-gray-200 hover:bg-pink-600">
             {{ __('Doctores') }}
         </x-nav-link>
@@ -35,6 +37,25 @@
             {{ __('Usuarios') }}
         </x-nav-link>
 
+@elseif (Auth::user()->hasRole('Secretaria'))
+
+        <x-nav-link :href="route('servicios.index')" :active="request()->routeIs('servicios.index')" class="px-4 py-2 text-white hover:text-gray-200 hover:bg-pink-600">
+            {{ __('Servicios') }}
+        </x-nav-link>
+        <x-nav-link :href="route('productos.index')" :active="request()->routeIs('productos.index')" class="px-4 py-2 text-white hover:text-gray-200 hover:bg-pink-600">
+            {{ __('Productos') }}
+        </x-nav-link>
+        <x-nav-link :href="route('citas.index')" :active="request()->routeIs('citas.index')" class="px-4 py-2 text-white hover:text-gray-200 hover:bg-pink-600">
+            {{ __('Citas') }}
+        </x-nav-link>
+
+@elseif (Auth::user()->hasRole('Paciente'))
+
+        <x-nav-link :href="route('citas.index')" :active="request()->routeIs('citas.index')" class="px-4 py-2 text-white hover:text-gray-200 hover:bg-pink-600">
+            {{ __('Citas') }}
+        </x-nav-link>
+
+@endif
     <!-- Settings Dropdown -->
     <div class="mb-4">
         <x-dropdown width="48" >
