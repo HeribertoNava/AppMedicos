@@ -1,11 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
 
-
 use App\Models\Doctores;
+use App\Models\Usuario;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Validation\Rules;
@@ -27,14 +25,13 @@ class DoctoresController extends Controller
         return view('doctores.editar', ['doctor' => $doctor]); //en la vista se pasan los datos del doctor que se va a editar
     }
     
-
     // formulario de crear un doctor
-     public function crear(): View
-     {
-         return view('doctores.crear');
-     }
+    public function crear(): View
+    {
+        return view('doctores.crear');
+    }
 
-     //Metodo para validar y crear el doctor
+    //Metodo para validar y crear el doctor
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
@@ -47,7 +44,7 @@ class DoctoresController extends Controller
             'consultorio' => ['required', 'int'],
         ]);
 
-
+        // Crear el registro en la tabla de doctores
         $doctor = Doctores::create([
             'nombres' => $request->nombres,
             'apellidos' => $request->apellidos,
@@ -56,6 +53,16 @@ class DoctoresController extends Controller
             'telefono' => $request->telefono, 
             'especialidad' => $request->especialidad,
             'consultorio' => $request->consultorio,
+        ]);
+
+        // Crear el registro en la tabla de usuarios
+        $usuario = Usuario::create([
+            'nombre' => $request->nombres,
+            'apellido' => $request->apellidos,
+            'email' => $request->correo,
+            'password' => Hash::make($request->password),
+            'telefono' => $request->telefono,
+            'rol' => 'Doctor',
         ]);
 
         event(new Registered($doctor));
@@ -75,7 +82,6 @@ class DoctoresController extends Controller
             'consultorio' => ['required', 'int'],
         ]);
 
-
         //actualiza unicamente los datos validados
         $doctor->update([
             'nombres' => $request->nombres,
@@ -86,6 +92,17 @@ class DoctoresController extends Controller
             'consultorio' => $request->consultorio,
         ]);
 
+        // Actualizar la información en la tabla de usuarios
+        $usuario = Usuario::where('email', $doctor->correo)->first();
+        if ($usuario) {
+            $usuario->update([
+                'nombre' => $request->nombres,
+                'apellido' => $request->apellidos,
+                'email' => $request->correo,
+                'telefono' => $request->telefono,
+            ]);
+        }
+
         return redirect()->route('doctores.index')->with('success', 'Datos del doctor actualizados.');
     }
 
@@ -94,7 +111,13 @@ class DoctoresController extends Controller
     {
         $doctor = Doctores::findOrFail($id);
         $doctor->delete();
+
+        // Eliminar también el registro de usuario asociado
+        $usuario = Usuario::where('email', $doctor->correo)->first();
+        if ($usuario) {
+            $usuario->delete();
+        }
+
         return redirect()->route('doctores.index')->with('success', 'Doctor eliminado.');
     }
-
 }

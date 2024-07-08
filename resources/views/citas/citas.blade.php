@@ -8,36 +8,41 @@
     Agendar Cita
 </a>
 
-<div id='wrap'>
-    <div id='external-events'>
-      <h4>Draggable Events</h4>
-
-      <div id='external-events-list'>
-        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-          <div class='fc-event-main'>My Event 1</div>
-        </div>
-        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-          <div class='fc-event-main'>My Event 2</div>
-        </div>
-        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-          <div class='fc-event-main'>My Event 3</div>
-        </div>
-        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-          <div class='fc-event-main'>My Event 4</div>
-        </div>
-        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-          <div class='fc-event-main'>My Event 5</div>
-        </div>
-      </div>
-
-      <p>
-        <input type='checkbox' id='drop-remove' />
-        <label for='drop-remove'>remove after drop</label>
-      </p>
+<div class="flex mt-6">
+    <!-- Calendario -->
+    <div id='calendar-wrap' class="flex-1 mr-4">
+        <div id='calendar'></div>
     </div>
 
-    <div id='calendar-wrap'>
-      <div id='calendar'></div>
+    <!-- Historial de citas -->
+    <div class="flex-1 ml-4">
+        <h2 class="text-xl font-semibold mb-4">Historial de Citas</h2>
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white border border-gray-200">
+                <thead class="bg-gray-800 text-white">
+                    <tr>
+                        <th class="px-4 py-2">Paciente</th>
+                        <th class="px-4 py-2">Doctor</th>
+                        <th class="px-4 py-2">Fecha</th>
+                        <th class="px-4 py-2">Hora</th>
+                        <th class="px-4 py-2">Estado</th>
+                        <th class="px-4 py-2">Detalles</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($citas as $cita)
+                        <tr class="bg-gray-100 border-b border-gray-200">
+                            <td class="px-4 py-2">{{ $cita->paciente->nombres }} {{ $cita->paciente->apellidos }}</td>
+                            <td class="px-4 py-2">{{ $cita->doctor->nombres }} {{ $cita->doctor->apellidos }}</td>
+                            <td class="px-4 py-2">{{ $cita->fecha }}</td>
+                            <td class="px-4 py-2">{{ $cita->hora }}</td>
+                            <td class="px-4 py-2">{{ $cita->estado }}</td>
+                            <td class="px-4 py-2">{{ $cita->detalles }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -48,62 +53,20 @@
       font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
     }
 
-    #external-events {
-      position: fixed;
-      left: 20px;
-      top: 20px;
-      width: 150px;
-      padding: 0 10px;
-      border: 1px solid #ccc;
-      background: #eee;
-      text-align: left;
-    }
-
-    #external-events h4 {
-      font-size: 16px;
-      margin-top: 0;
-      padding-top: 1em;
-    }
-
-    #external-events .fc-event {
-      margin: 3px 0;
-      cursor: move;
-    }
-
-    #external-events p {
-      margin: 1.5em 0;
-      font-size: 11px;
-      color: #666;
-    }
-
-    #external-events p input {
-      margin: 0;
-      vertical-align: middle;
-    }
-
     #calendar-wrap {
-      margin-left: 200px;
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
     }
 
     #calendar {
-      max-width: 1100px;
+      max-width: 1000px;
       margin: 0 auto;
     }
 </style>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // Inicializar eventos arrastrables
-      var containerEl = document.getElementById('external-events-list');
-      new FullCalendar.Draggable(containerEl, {
-        itemSelector: '.fc-event',
-        eventData: function(eventEl) {
-          return {
-            title: eventEl.innerText.trim()
-          }
-        }
-      });
-
       // Inicializar el calendario
       var calendarEl = document.getElementById('calendar');
       var calendar = new FullCalendar.Calendar(calendarEl, {
