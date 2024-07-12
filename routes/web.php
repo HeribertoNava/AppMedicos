@@ -8,7 +8,7 @@ use App\Http\Controllers\ProductosController;
 use App\Http\Controllers\SecretariasController;
 use App\Http\Controllers\CitasController;
 use App\Http\Controllers\UsuarioController;
-
+use App\Http\Controllers\ConsultaController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -88,6 +88,14 @@ Route::middleware('auth')->group(function () {
     Route::put('usuarios/{usuario}', [UsuarioController::class, 'update'])->name('usuarios.update');
     // Eliminar un usuario específico
     Route::delete('usuarios/{usuario}', [UsuarioController::class, 'destroy'])->name('usuarios.destroy');
+
+
+    // ruta de consulta
+
+    Route::middleware(['auth'])->group(function () {
+        Route::get('consultas/create/{paciente_id}', [ConsultaController::class, 'create'])->name('consultas.create');
+        Route::resource('consultas', ConsultaController::class)->except(['create']);
+    });
 
 });
 

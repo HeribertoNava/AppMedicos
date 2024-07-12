@@ -16,10 +16,10 @@ class Pacientes extends Authenticatable
         'apellidos',
         'correo',
         'password',
-        'telefono',  
+        'telefono',
         'direccion',
         'edad',
-   
+
     ];
 
     protected $hidden = [
