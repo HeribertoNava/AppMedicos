@@ -13,11 +13,11 @@
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
                     <label for="nombre" class="block text-gray-700">Nombre</label>
-                    <input type="text" id="nombre" name="nombre" class="w-full border-gray-300 rounded-lg" value="{{ $paciente ? $paciente->nombres : '' }}" readonly />
+                    <input type="text" id="nombre" name="nombre" class="w-full border-gray-300 rounded-lg" value="{{ $paciente->nombres }}" readonly />
                 </div>
                 <div>
                     <label for="correo" class="block text-gray-700">Correo</label>
-                    <input type="email" id="correo" name="correo" class="w-full border-gray-300 rounded-lg" value="{{ $paciente ? $paciente->correo : '' }}" readonly />
+                    <input type="email" id="correo" name="correo" class="w-full border-gray-300 rounded-lg" value="{{ $paciente->correo }}" readonly />
                 </div>
             </div>
         </div>
@@ -123,7 +123,7 @@
             <h2 class="mb-2 text-xl font-semibold">Productos</h2>
             @foreach($productos as $producto)
             <div class="flex items-center mb-2">
-                <input type="checkbox" id="producto_{{ $producto->id }}" name="productos[]" value="{{ $producto->id }}" class="mr-2">
+                <input type="checkbox" id="producto_{{ $producto->id }}" name="productos[]" value="{{ $producto->precio }}" class="mr-2 producto-checkbox">
                 <label for="producto_{{ $producto->id }}" class="text-gray-700">{{ $producto->nombre }} ({{ $producto->precio }} pesos)</label>
             </div>
             @endforeach
@@ -134,7 +134,7 @@
             <h2 class="mb-2 text-xl font-semibold">Servicios</h2>
             @foreach($servicios as $servicio)
             <div class="flex items-center mb-2">
-                <input type="checkbox" id="servicio_{{ $servicio->id }}" name="servicios[]" value="{{ $servicio->id }}" class="mr-2">
+                <input type="checkbox" id="servicio_{{ $servicio->id }}" name="servicios[]" value="{{ $servicio->precio }}" class="mr-2 servicio-checkbox">
                 <label for="servicio_{{ $servicio->id }}" class="text-gray-700">{{ $servicio->nombre }} ({{ $servicio->precio }} pesos)</label>
             </div>
             @endforeach
@@ -143,7 +143,7 @@
         <!-- Total a Pagar -->
         <div class="p-4 mb-4 bg-white rounded-lg shadow-md">
             <label for="total_a_pagar" class="block text-gray-700">Total a Pagar</label>
-            <input type="text" id="total_a_pagar" name="total_a_pagar" class="w-full border-gray-300 rounded-lg" value="{{ old('total_a_pagar') }}" />
+            <input type="text" id="total_a_pagar" name="total_a_pagar" class="w-full border-gray-300 rounded-lg" value="0.00" readonly />
             @error('total_a_pagar')
                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
             @enderror
@@ -160,6 +160,29 @@
         const recetaTemplate = document.querySelector('.receta-template').cloneNode(true);
         recetaTemplate.classList.remove('receta-template', 'hidden');
         document.querySelector('.recetas-container').appendChild(recetaTemplate);
+    });
+
+    // Función para calcular el total a pagar
+    function calculateTotal() {
+        let total = 0;
+
+        // Sumar precios de los productos seleccionados
+        document.querySelectorAll('.producto-checkbox:checked').forEach(function(element) {
+            total += parseFloat(element.value);
+        });
+
+        // Sumar precios de los servicios seleccionados
+        document.querySelectorAll('.servicio-checkbox:checked').forEach(function(element) {
+            total += parseFloat(element.value);
+        });
+
+        // Actualizar el campo total_a_pagar
+        document.getElementById('total_a_pagar').value = total.toFixed(2);
+    }
+
+    // Añadir evento a los checkboxes de productos y servicios
+    document.querySelectorAll('.producto-checkbox, .servicio-checkbox').forEach(function(element) {
+        element.addEventListener('change', calculateTotal);
     });
 </script>
 @endsection

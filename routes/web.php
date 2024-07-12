@@ -92,10 +92,12 @@ Route::middleware('auth')->group(function () {
 
     // ruta de consulta
 
-    Route::middleware(['auth'])->group(function () {
-        Route::get('consultas/create/{paciente_id}', [ConsultaController::class, 'create'])->name('consultas.create');
-        Route::resource('consultas', ConsultaController::class)->except(['create']);
-    });
+
+
+
+    Route::get('/consultas', [ConsultaController::class, 'index'])->name('consultas.index');
+    Route::get('/consultas/create/{paciente}', [ConsultaController::class, 'create'])->name('consultas.create');
+    Route::post('/consultas', [ConsultaController::class, 'store'])->name('consultas.store');
 
 });
 
