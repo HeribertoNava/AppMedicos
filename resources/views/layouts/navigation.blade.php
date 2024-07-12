@@ -39,6 +39,9 @@
         </x-nav-link>
 
 @elseif (Auth::user()->hasRole('Secretaria'))
+        <x-nav-link :href="route('pacientes.index')" :active="request()->routeIs('pacientes.index')" class="px-4 py-2 text-white hover:text-gray-200 hover:bg-pink-600">
+            {{ __('Pacientes') }}
+        </x-nav-link>
 
         <x-nav-link :href="route('servicios.index')" :active="request()->routeIs('servicios.index')" class="px-4 py-2 text-white hover:text-gray-200 hover:bg-pink-600">
             {{ __('Servicios') }}

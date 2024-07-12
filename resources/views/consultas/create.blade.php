@@ -1,3 +1,6 @@
+@if (Auth::user()->hasRole('Doctor'))
+
+
 @extends('layouts.app')
 
 @section('content')
@@ -186,3 +189,4 @@
     });
 </script>
 @endsection
+@endif

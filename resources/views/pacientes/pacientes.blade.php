@@ -46,7 +46,7 @@
                         @method('DELETE')
                         <button type="submit" class="font-medium text-red-600 dark:text-red-500 hover:underline" onclick="return confirm('¿Estás seguro de que deseas eliminar a este paciente?')">Eliminar</button>
                     </form>
-                    @if(auth()->user()->rol === 'Doctor' || auth()->user()->rol === 'Secretaria')
+                    @if(auth()->user()->rol === 'Doctor')
                     <a href="{{ route('consultas.create', $paciente->id) }}" class="font-medium text-green-600 dark:text-green-500 hover:underline">{{ __('Consultas') }}</a>
                     @endif
                 </td>
