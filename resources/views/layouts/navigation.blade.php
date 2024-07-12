@@ -60,8 +60,8 @@
     <div class="mb-4">
         <x-dropdown width="48" >
             <x-slot name="trigger">
-                <button class="flex items-center justify-center w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-white transition duration-150 ease-in-out bg-[#FF8FAB] border border-transparent rounded-lg hover:bg-[#FB6F92] focus:outline-none">
-                    <span>{{ Auth::user()->name }}</span>
+                <button class="flex items-center justify-center w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-black transition duration-150 ease-in-out bg-[#FF8FAB] border border-transparent rounded-lg hover:bg-[#FB6F92] focus:outline-none">
+                    <span>{{Auth::user()->showName()}}</span>
                     <svg class="w-5 h-5 ml-auto" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                     </svg>
@@ -118,8 +118,8 @@
     <!-- Responsive Settings Options -->
     <div class="pt-4 pb-1 border-t border-gray-200">
         <div class="px-4">
-            <div class="text-base font-medium text-white">{{ Auth::user()->name }}</div>
-            <div class="text-sm font-medium text-gray-200">{{ Auth::user()->email }}</div>
+            <div class="text-base font-medium text-black">{{ Auth::user()->showName()}}</div>
+            <div class="text-sm font-medium text-black-200">{{ Auth::user()->showRol() }}</div>
         </div>
         <div class="mt-3 space-y-1">
             <x-responsive-nav-link :href="route('profile.edit')" class="text-white hover:bg-pink-600">

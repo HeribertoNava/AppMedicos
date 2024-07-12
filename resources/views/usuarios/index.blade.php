@@ -1,3 +1,6 @@
+@if(auth()->user()->rol ==='Doctor')
+
+
 @extends('layouts.app')
 
 @section('content')
@@ -43,3 +46,5 @@
     </div>
 </div>
 @endsection
+
+@endif

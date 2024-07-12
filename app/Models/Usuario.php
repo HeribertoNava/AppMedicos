@@ -33,5 +33,12 @@ class Usuario extends Authenticatable
     {
         return $this->rol === $role;
     }
+    public function showRol() {
+        return $this->rol;
+   }
+
+   public function showName() {
+        return $this->nombre;
+   }
 }
 

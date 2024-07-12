@@ -1,3 +1,5 @@
+@if(auth()->user()->rol === 'Doctor' || auth()->user()->rol === 'Secretaria')
+
 @extends('layouts.app')
 
 @section('content')
@@ -18,35 +20,29 @@
             </button>
         </div>
     </div>
-    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase" style="background-color: #f8e7f2;">
-            <tr>
-                <th scope="col" class="px-6 py-3">Producto</th>
-                <th scope="col" class="px-6 py-3">Descripción</th>
-                <th scope="col" class="px-6 py-3">Cantidad</th>
-                <th scope="col" class="px-6 py-3">Precio</th>
-                <th scope="col" class="px-6 py-3">Acción</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($productos as $producto)
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <td class="px-6 py-4">{{ $producto->nombre }}</td>
-                <td class="px-6 py-4">{{ $producto->descripcion }}</td>
-                <td class="px-6 py-4">{{ $producto->cantidad }}</td>
-                <td class="px-6 py-4">{{ $producto->precio }}</td>
-                <td class="flex px-6 py-4 space-x-2">
-                    <a href="{{ route('productos.editar', $producto->id) }}" class="font-medium text-pink-600 dark:text-pink-500 hover:underline">Editar</a>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"> <!-- Ajuste de gap para espacio entre recuadros -->
+        @foreach ($productos as $producto)
+        <div class="flex items-center p-4 mb-4 bg-white rounded-lg shadow-md dark:bg-gray-800"> <!-- Eliminado mx-5 -->
+            <div class="flex-shrink-0">
+                <x-application-producto class="block text-white fill-current w-12 h-12" />
+            </div>
+            <div class="ml-4">
+                <div class="text-lg font-medium text-gray-900 dark:text-white">{{ $producto->nombre }}</div>
+                <div class="text-sm text-gray-500 dark:text-gray-400">{{ $producto->descripcion }}</div>
+                <div class="text-sm text-gray-500 dark:text-gray-400">Cantidad: {{ $producto->cantidad }}</div>
+                <div class="text-sm text-gray-500 dark:text-gray-400">Precio: ${{ $producto->precio }}</div>
+                <div class="flex mt-2 space-x-2">
+                    <a href="{{ route('productos.editar', $producto->id) }}" class="text-pink-600 dark:text-pink-500 hover:underline">Editar</a>
                     <form action="{{ route('productos.eliminar', $producto->id) }}" method="POST" style="display:inline">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="font-medium text-red-600 dark:text-red-500 hover:underline" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?')">Eliminar</button>
+                        <button type="submit" class="text-red-600 dark:text-red-500 hover:underline" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?')">Eliminar</button>
                     </form>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+                </div>
+            </div>
+        </div>
+        @endforeach
+    </div>
 </div>
 
 <!-- Modal -->
@@ -100,3 +96,4 @@
     }
 </script>
 @endsection
+@endif

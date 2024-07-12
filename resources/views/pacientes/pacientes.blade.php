@@ -1,3 +1,6 @@
+@if(auth()->user()->rol ==='Doctor' || auth()->user()->rol ==='Secretaria' )
+
+
 @extends('layouts.app')
 
 @section('content')
@@ -128,3 +131,5 @@
     }
 </script>
 @endsection
+
+@endif
