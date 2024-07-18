@@ -15,6 +15,19 @@ class CitasController extends Controller
     {
         $citas = Citas::with(['paciente', 'doctor'])->get();
         return view('citas.citas', ['citas' => $citas]);
+
+        $user = Auth::user();
+
+        // Filtrar las citas según el rol del usuario
+        if ($user->rol === 'Paciente') {
+            // Si el usuario es un paciente, solo ver sus propias citas
+            $citas = Cita::where('paciente_id', $user->id)->get();
+        } else {
+            // Si el usuario es un doctor, ver todas las citas
+            $citas = Cita::all();
+        }
+
+        return view('citas.citas', compact('citas'));
     }
 
     public function crear()
@@ -51,3 +64,4 @@ class CitasController extends Controller
         return redirect()->route('citas.index')->with('success', 'Cita creada exitosamente.');
     }
 }
+ 

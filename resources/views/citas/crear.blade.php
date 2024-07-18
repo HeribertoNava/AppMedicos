@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section('content')
@@ -14,6 +15,7 @@
                         <p class="font-medium text-lg">Agendar Cita</p>
                         <p>Ingrese todos los campos</p>
                     </div>
+
 
                     <div class="lg:col-span-2">
                         <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">

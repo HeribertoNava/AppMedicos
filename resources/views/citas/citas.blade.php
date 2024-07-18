@@ -4,9 +4,11 @@
 <script src="{{ asset('assets/fullcalendar/dist/index.global.js') }}"></script>
 
 <!-- Botón para agendar una nueva cita -->
+@if(auth()->user()->rol === 'Doctor')                       
 <a href="{{ route('citas.crear') }}" class="px-4 py-2 text-sm font-medium text-center text-black bg-[#FFE5EC] rounded-lg hover:bg-[#FFC2D1] focus:ring-4 focus:outline-none focus:ring-[#FFB3C6] transition duration-300">
     Agendar Cita
 </a>
+@endif
 
 <div class="flex mt-6">
     <!-- Calendario -->

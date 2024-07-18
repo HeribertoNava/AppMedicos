@@ -37,11 +37,14 @@
                 <td class="px-6 py-4">{{ $servicio->descripcion }}</td>
                 <td class="px-6 py-4">{{ $servicio->precio }}</td>
                 <td class="flex px-6 py-4 space-x-2">
+                    @if(auth()->user()->rol === 'Doctor')                       
+
                     <a href="{{ route('servicios.editar', $servicio->id) }}" class="font-medium text-pink-600 dark:text-pink-500 hover:underline">Editar</a>
                     <form action="{{ route('servicios.eliminar', $servicio->id) }}" method="POST" style="display:inline">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="font-medium text-red-600 dark:text-red-500 hover:underline" onclick="return confirm('¿Estás seguro de que deseas eliminar este servicio?')">Eliminar</button>
+                        @endif
                     </form>
                 </td>
             </tr>

@@ -32,11 +32,13 @@
                 <div class="text-sm text-gray-500 dark:text-gray-400">Cantidad: {{ $producto->cantidad }}</div>
                 <div class="text-sm text-gray-500 dark:text-gray-400">Precio: ${{ $producto->precio }}</div>
                 <div class="flex mt-2 space-x-2">
+                    @if(auth()->user()->rol === 'Doctor')                       
                     <a href="{{ route('productos.editar', $producto->id) }}" class="text-pink-600 dark:text-pink-500 hover:underline">Editar</a>
                     <form action="{{ route('productos.eliminar', $producto->id) }}" method="POST" style="display:inline">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="text-red-600 dark:text-red-500 hover:underline" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?')">Eliminar</button>
+                        @endif
                     </form>
                 </div>
             </div>
