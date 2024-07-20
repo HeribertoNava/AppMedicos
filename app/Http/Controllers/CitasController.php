@@ -8,6 +8,7 @@ use App\Models\Citas;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class CitasController extends Controller
 {
@@ -21,10 +22,10 @@ class CitasController extends Controller
         // Filtrar las citas según el rol del usuario
         if ($user->rol === 'Paciente') {
             // Si el usuario es un paciente, solo ver sus propias citas
-            $citas = Cita::where('paciente_id', $user->id)->get();
+            $citas = Citas::where('paciente_id', $user->id)->get();
         } else {
             // Si el usuario es un doctor, ver todas las citas
-            $citas = Cita::all();
+            $citas = Citas::all();
         }
 
         return view('citas.citas', compact('citas'));
@@ -35,7 +36,7 @@ class CitasController extends Controller
         $pacientes = Pacientes::all();
         $doctores = Doctores::all();
         return view('citas.crear', compact('pacientes', 'doctores'));
-        
+
     }
 
     public function store(Request $request)
@@ -63,5 +64,22 @@ class CitasController extends Controller
 
         return redirect()->route('citas.index')->with('success', 'Cita creada exitosamente.');
     }
+
+    public function getHorasOcupadas(Request $request)
+    {
+        $fecha = $request->query('fecha');
+        $doctorId = $request->query('doctor_id');
+
+        // Obtener todas las citas para ese doctor y fecha
+        $citas = Citas::where('doctor_id', $doctorId)
+                      ->whereDate('fecha', $fecha)
+                      ->get();
+
+        // Extraer solo las horas de esas citas
+        $horasOcupadas = $citas->pluck('hora')->map(function($hora) {
+            return Carbon::createFromFormat('H:i:s', $hora)->format('H:i');
+        })->toArray();
+
+        return response()->json($horasOcupadas);
+    }
 }
- 

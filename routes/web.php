@@ -71,6 +71,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/citas/{secretaria}/editar', [CitasController::class, 'editar'])->name('citas.editar');
     Route::put('/citas/{secretaria}', [CitasController::class, 'actualizar'])->name('citas.actualizar');
     Route::delete('/citas/{secretaria}', [CitasController::class, 'eliminar'])->name('citas.eliminar');
+    Route::get('/citas/horas-ocupadas', 'CitasController@getHorasOcupadas');
+
 
 
     //Ruta para usuarios
