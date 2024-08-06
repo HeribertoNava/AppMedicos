@@ -55,9 +55,9 @@
                             <!-- Selección de Horas Disponibles -->
                             <div class="md:col-span-5">
                                 <label for="hora">Hora</label>
-                                <select name="hora" id="hora" class="w-full h-10 px-4 mt-1 border rounded bg-gray-50" required>
-                                    <option value="9:00" selected>9:00</option> <!-- Valor predeterminado -->
-                                </select>
+                                <div id="horas_disponibles" class="grid grid-cols-2 gap-2">
+                                    <!-- Aquí se generarán dinámicamente las horas disponibles -->
+                                </div>
                             </div>
 
                             <!-- Selección de Estado -->
@@ -65,9 +65,7 @@
                                 <label for="estado">Estado</label>
                                 <select name="estado" id="estado" class="w-full h-10 px-4 mt-1 border rounded bg-gray-50">
                                     <option value="En proceso">En proceso</option>
-                                    <option value="Cancelada">Cancelada</option>
-                                    <option value="Completada">Completada</option>
-                                </select>
+                                </select
                             </div>
 
                             <!-- Botón de enviar -->
@@ -76,7 +74,6 @@
                                     <button type="submit" class="px-4 py-2 font-bold text-black rounded" style="background-color: #daffef; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#247b7b'" onmouseout="this.style.backgroundColor='#daffef'">Agendar</button>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -87,56 +84,58 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Obtener el select de rango de horas y el select de horas
         var rangoHorasSelect = document.getElementById('rango_horas');
-        var horaSelect = document.getElementById('hora');
         var fechaInput = document.getElementById('fecha');
+        var doctorInput = document.getElementById('doctor_id');
+        var horasDisponiblesDiv = document.getElementById('horas_disponibles');
 
-        // Función para llenar el select de horas según el rango seleccionado y las horas ocupadas
-        function llenarHoras() {
-            var rango = rangoHorasSelect.value;
-            var horas = [];
-
-            if (rango === '9:00-11:00') {
-                horas = ['9:00', '9:30', '10:00', '10:30', '11:00'];
-            } else if (rango === '12:00-15:00') {
-                horas = ['12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00'];
-            }
-
-            // Obtener las horas ocupadas para la fecha seleccionada
+        // Función para generar dinámicamente las horas disponibles
+        function generarHorasDisponibles() {
+            var rango = rangoHorasSelect.value.split('-').map(h => h.trim());
+            var inicio = rango[0];
+            var fin = rango[1];
             var fecha = fechaInput.value;
-            if (fecha) {
-                fetch(`/citas/horas-ocupadas?fecha=${fecha}`)
-                    .then(response => response.json())
-                    .then(horasOcupadas => {
-                        // Filtrar las horas ocupadas
-                        horas = horas.filter(hora => !horasOcupadas.includes(hora));
+            var doctorId = doctorInput.value;
 
-                        // Limpiar el select de horas
-                        horaSelect.innerHTML = '';
+            if (fecha && doctorId) {
+                fetch(`/citas/horas-disponibles?fecha=${fecha}&doctor_id=${doctorId}&horaInicio=${inicio}&horaFin=${fin}`)
+                .then(response => response.json())
+                .then(horasDisponibles => {
+                    horasDisponiblesDiv.innerHTML = '';
+                    if (horasDisponibles.length > 0) {
+                        horasDisponibles.forEach(function(hora) {
+                            var checkbox = document.createElement('input');
+                            checkbox.type = 'checkbox';
+                            checkbox.name = 'hora';
+                            checkbox.value = hora;
+                            checkbox.id = `hora_${hora.replace(':', '')}`;
 
-                        // Llenar el select con las nuevas horas
-                        horas.forEach(function(hora) {
-                            var option = document.createElement('option');
-                            option.value = hora;
-                            option.textContent = hora;
-                            horaSelect.appendChild(option);
+                            var label = document.createElement('label');
+                            label.htmlFor = `hora_${hora.replace(':', '')}`;
+                            label.textContent = hora;
+
+                            var div = document.createElement('div');
+                            div.appendChild(checkbox);
+                            div.appendChild(label);
+
+                            horasDisponiblesDiv.appendChild(div);
                         });
-
-                        // Establecer la primera opción como predeterminada si hay opciones disponibles
-                        if (horas.length > 0) {
-                            horaSelect.value = horas[0];
-                        }
-                    });
+                    } else {
+                        horasDisponiblesDiv.innerHTML = '<p>No hay horas disponibles para este rango y fecha.</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching available hours:', error);
+                    horasDisponiblesDiv.innerHTML = '<p>Error al buscar horas disponibles. Intente de nuevo más tarde.</p>';
+                });
             } else {
-                // Limpiar el select de horas si no hay fecha seleccionada
-                horaSelect.innerHTML = '';
+                horasDisponiblesDiv.innerHTML = '<p>Seleccione una fecha y un doctor para ver las horas disponibles.</p>';
             }
         }
 
-        // Llenar el select de horas al cambiar la fecha y cuando se cambie el rango
-        fechaInput.addEventListener('change', llenarHoras);
-        rangoHorasSelect.addEventListener('change', llenarHoras);
+        fechaInput.addEventListener('change', generarHorasDisponibles);
+        rangoHorasSelect.addEventListener('change', generarHorasDisponibles);
+        doctorInput.addEventListener('change', generarHorasDisponibles);
     });
 </script>
 @endsection

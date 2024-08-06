@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pacientes;
-use App\Models\Doctores;
-use App\Models\Citas;
-use Illuminate\Http\Request;
-use Illuminate\View\View;
 use Carbon\Carbon;
+use App\Models\Citas;
+use App\Models\Doctores;
+use App\Models\Pacientes;
+use Illuminate\View\View;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CitasController extends Controller
@@ -82,4 +82,6 @@ class CitasController extends Controller
 
         return response()->json($horasOcupadas);
     }
+
+
 }
