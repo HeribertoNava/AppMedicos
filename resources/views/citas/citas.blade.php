@@ -119,6 +119,30 @@
     }
 </style>
 
+<div id="modalCita" class="fixed inset-0 hidden overflow-y-auto bg-gray-600 bg-opacity-50" onclick="if(event.target.id === 'modalCita') { closeModal(); }">
+    <div class="relative p-5 mx-auto bg-white border rounded-md shadow-lg top-20 w-96">
+        <div class="mt-3 text-center">
+            <div id="modalContent" class="p-4 text-left">
+                <!-- Contenido del modal será insertado aquí -->
+            </div>
+            <div class="items-center px-4 py-3">
+                <button id="closeButton" class="w-full px-4 py-2 text-base font-medium text-white bg-red-500 rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500" onclick="closeModal()">
+                    Cerrar
+                </button>
+                <button id="closeButton" class="w-full px-4 py-2 text-base font-medium text-white bg-red-500 rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500" onclick="closeModal()">
+                    Completar
+                </button>
+                <button id="closeButton" class="w-full px-4 py-2 text-base font-medium text-white bg-red-500 rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500" onclick="closeModal()">
+                    Cancelar
+                </button>
+                <button id="closeButton" class="w-full px-4 py-2 text-base font-medium text-white bg-red-500 rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500" onclick="closeModal()">
+                    Editar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Inicializar el calendario
@@ -144,15 +168,21 @@
                 ];
             })->toArray()) !!},
             eventClick: function(info) {
-                alert('Evento: ' + info.event.title + '\n' +
-                      'Detalles: ' + info.event.extendedProps.detalles + '\n' +
-                      'Doctor: ' + info.event.extendedProps.doctor + '\n' +
-                      'Estado: ' + info.event.extendedProps.estado + '\n' +
-                      'Fecha: ' + info.event.start.toISOString());
+                var content = `<h3>${info.event.title}</h3><p>Detalles: ${info.event.extendedProps.detalles}</p><p>Doctor: ${info.event.extendedProps.doctor}</p><p>Estado: ${info.event.extendedProps.estado}</p><p>Fecha: ${info.event.start.toISOString().slice(0, 10)}</p>`;
+                openModal(content);
             }
         });
 
         calendar.render();
     });
+
+    function openModal(content) {
+        document.getElementById('modalContent').innerHTML = content;
+        document.getElementById('modalCita').classList.remove('hidden');
+    }
+
+    function closeModal() {
+        document.getElementById('modalCita').classList.add('hidden');
+    }
 </script>
 @endsection
