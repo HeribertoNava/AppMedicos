@@ -1,32 +1,36 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\Receta;
 use App\Models\Consulta;
+use App\Models\Doctores;
+use App\Models\Pacientes;
 use App\Models\Productos;
 use App\Models\Servicios;
-use App\Models\Pacientes;
-use App\Models\Receta;
 use Illuminate\Http\Request;
 
 class ConsultaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $consultas = Consulta::all();
-        return view('consultas.index', compact('consultas'));
+        $pacienteId = $request->query('paciente_id');
+        $consultas = Consulta::where('paciente_id', $pacienteId)->get();
+        $paciente = Pacientes::find($pacienteId);
+        return view('consultas.index', compact('consultas', 'paciente'));
     }
 
-    public function create(Pacientes $paciente)
+    public function create(Request $request)
     {
-        $productos = Productos::all();
-        $servicios = Servicios::all();
-
-        return view('consultas.create', compact('productos', 'servicios', 'paciente'));
+        $pacienteId = $request->query('paciente_id');
+        $doctores = Doctores::all();
+        return view('consultas.create', compact('pacienteId', 'doctores'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
+            'paciente_id' => 'required|exists:pacientes,id',
+            'doctor_id' => 'required|exists:doctores,id',
             'correo' => 'required|email',
             'nombre' => 'required|string',
             'motivo_consulta' => 'required|string',
@@ -68,6 +72,7 @@ class ConsultaController extends Controller
             }
         }
 
-        return redirect()->route('consultas.index')->with('success', 'Consulta creada exitosamente.');
+        return redirect()->route('consultas.index', ['paciente_id' => $request->paciente_id])
+        ->with('success', 'Consulta creada exitosamente.');
     }
 }

@@ -14,18 +14,18 @@ class Citas extends Model
         'doctor_id',
         'fecha',
         'hora',
-        'estado',   
+        'estado',
     ];
 
-   // Relación con Paciente
-   public function paciente()
-   {
-       return $this->belongsTo(Pacientes::class, 'paciente_id');
-   }
+    // Relación con Paciente
+    public function paciente()
+    {
+        return $this->belongsTo(Pacientes::class, 'paciente_id');
+    }
 
-   // Relación con Doctor
-   public function doctor()
-   {
-       return $this->belongsTo(Doctores::class, 'doctor_id');
-   }
+    // Relación con Doctor
+    public function doctor()
+    {
+        return $this->belongsTo(Doctores::class, 'doctor_id');
+    }
 }

@@ -71,8 +71,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/citas/{secretaria}/editar', [CitasController::class, 'editar'])->name('citas.editar');
     Route::put('/citas/{secretaria}', [CitasController::class, 'actualizar'])->name('citas.actualizar');
     Route::delete('/citas/{secretaria}', [CitasController::class, 'eliminar'])->name('citas.eliminar');
-    Route::get('/citas/horas-ocupadas', 'CitasController@getHorasOcupadas');
-
+    Route::get('/citas/horas-ocupadas', [CitasController::class, 'getHorasOcupadas'])->name('citas.horas-ocupadas');
 
 
     //Ruta para usuarios
@@ -98,8 +97,10 @@ Route::middleware('auth')->group(function () {
 
 
     Route::get('/consultas', [ConsultaController::class, 'index'])->name('consultas.index');
-    Route::get('/consultas/create/{paciente}', [ConsultaController::class, 'create'])->name('consultas.create');
+    Route::get('/consultas/create', [ConsultaController::class, 'create'])->name('consultas.create');
     Route::post('/consultas', [ConsultaController::class, 'store'])->name('consultas.store');
+
+
 
 });
 

@@ -41,10 +41,10 @@
                 <td class="px-6 py-4">{{ $paciente->edad }}</td>
                 <td class="flex px-6 py-4 space-x-2">
                     <a href="{{ route('pacientes.editar', $paciente->id) }}" class="font-medium text-pink-600 dark:text-pink-500 hover:underline">Editar</a>
-                    @if(auth()->user()->rol === 'Doctor')                       
+                    @if(auth()->user()->rol === 'Doctor')
 
                     <form action="{{ route('pacientes.eliminar', $paciente->id) }}" method="POST" style="display:inline">
-                        
+
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="font-medium text-red-600 dark:text-red-500 hover:underline" onclick="return confirm('¿Estás seguro de que deseas eliminar a este paciente?')">Eliminar</button>
@@ -52,7 +52,7 @@
                     @endif
 
                     @if(auth()->user()->rol === 'Doctor')
-                    <a href="{{ route('consultas.create', $paciente->id) }}" class="font-medium text-green-600 dark:text-green-500 hover:underline">{{ __('Consultas') }}</a>
+                    <a href="{{ route('consultas.index', ['paciente_id' => $paciente->id]) }}" class="font-medium text-green-600 dark:text-green-500 hover:underline">{{ __('Consultas') }}</a>
                     @endif
                 </td>
             </tr>

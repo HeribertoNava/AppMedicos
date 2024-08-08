@@ -15,7 +15,6 @@ class CitasController extends Controller
     public function index(): View
     {
         $citas = Citas::with(['paciente', 'doctor'])->get();
-        return view('citas.citas', ['citas' => $citas]);
 
         $user = Auth::user();
 
@@ -36,18 +35,17 @@ class CitasController extends Controller
         $pacientes = Pacientes::all();
         $doctores = Doctores::all();
         return view('citas.crear', compact('pacientes', 'doctores'));
-
     }
 
     public function store(Request $request)
     {
         // Validar datos de entrada
         $request->validate([
-            'paciente_id' => 'required|exists:pacientes,id',
-            'doctor_id' => 'required|exists:doctores,id',
+            'paciente_id_hidden' => 'required|exists:pacientes,id',
+            'doctor_id_hidden' => 'required|exists:doctores,id',
             'fecha' => 'required|date|after_or_equal:today',
-            'hora' => 'required|date_format:H:i',
-            'estado' => 'required|in:Completada,Cancelada,En proceso',
+            'hora' => 'required|date_format:H:i:s', // Asegurar el formato correcto
+            'estado' => 'required|in:Completada,Cancelada,En curso',
         ]);
 
         // Obtener la fecha y hora ingresadas
@@ -59,29 +57,60 @@ class CitasController extends Controller
             return back()->withErrors(['hora' => 'La cita debe ser agendada con al menos 3 horas de anticipación.'])->withInput();
         }
 
-        // Crear la cita
-        Citas::create($request->all());
+        // Crear la cita con el estado "En curso" por defecto
+        Citas::create([
+            'paciente_id' => $request->paciente_id_hidden,
+            'doctor_id' => $request->doctor_id_hidden,
+            'fecha' => $request->fecha,
+            'hora' => $request->hora,
+            'estado' => 'En curso',
+        ]);
 
         return redirect()->route('citas.index')->with('success', 'Cita creada exitosamente.');
     }
 
+    public function getHorasDisponibles(Request $request)
+    {
+        $fecha = $request->input('fecha');
+        $doctorId = $request->input('doctor_id');
+        $inicio = $request->input('horaInicio');
+        $fin = $request->input('horaFin');
+
+        $horasOcupadas = Citas::where('doctor_id', $doctorId)
+                              ->whereDate('fecha', $fecha)
+                              ->pluck('hora')
+                              ->toArray();
+
+        // Suponiendo que las citas son de 30 minutos y que trabajan en horas de oficina
+        $todasLasHoras = $this->generarHoras($inicio, $fin);
+        $horasDisponibles = array_diff($todasLasHoras, $horasOcupadas);
+
+        return response()->json($horasDisponibles);
+    }
+
+    private function generarHoras($inicio, $fin) {
+        $horas = [];
+        $start = Carbon::createFromFormat('H:i', $inicio);
+        $end = Carbon::createFromFormat('H:i', $fin);
+
+        while ($start < $end) {
+            $horas[] = $start->format('H:i:s'); // Asegurar el formato correcto
+            $start->addMinutes(30); // incremento cada 30 minutos
+        }
+
+        return $horas;
+    }
+
     public function getHorasOcupadas(Request $request)
     {
-        $fecha = $request->query('fecha');
-        $doctorId = $request->query('doctor_id');
+        $fecha = $request->input('fecha');
+        $doctorId = $request->input('doctor_id');
 
-        // Obtener todas las citas para ese doctor y fecha
-        $citas = Citas::where('doctor_id', $doctorId)
-                      ->whereDate('fecha', $fecha)
-                      ->get();
-
-        // Extraer solo las horas de esas citas
-        $horasOcupadas = $citas->pluck('hora')->map(function($hora) {
-            return Carbon::createFromFormat('H:i:s', $hora)->format('H:i');
-        })->toArray();
+        $horasOcupadas = Citas::where('doctor_id', $doctorId)
+                              ->whereDate('fecha', $fecha)
+                              ->pluck('hora')
+                              ->all();
 
         return response()->json($horasOcupadas);
     }
-
-
 }
