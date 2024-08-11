@@ -16,4 +16,10 @@ class Servicios extends Model
         'descripcion',
         'precio',
     ];
+
+    public function consultas()
+    {
+        return $this->belongsToMany(Consulta::class, 'consulta_servicio', 'servicio_id', 'consulta_id')
+                    ->withPivot('cantidad', 'precio', 'notas_servicio');
+    }
 }

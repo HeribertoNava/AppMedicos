@@ -99,6 +99,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/consultas', [ConsultaController::class, 'index'])->name('consultas.index');
     Route::get('/consultas/create', [ConsultaController::class, 'create'])->name('consultas.create');
     Route::post('/consultas', [ConsultaController::class, 'store'])->name('consultas.store');
+    Route::get('/consultas/{id}', [ConsultaController::class, 'show'])->name('consultas.show');
+    Route::get('/consultas/{paciente}/create', [ConsultaController::class, 'create'])->name('consultas.create');
 
 
 

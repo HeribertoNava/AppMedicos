@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Receta;
@@ -11,19 +12,29 @@ use Illuminate\Http\Request;
 
 class ConsultaController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $pacienteId = $request->query('paciente_id');
-        $consultas = Consulta::where('paciente_id', $pacienteId)->get();
-        $paciente = Pacientes::find($pacienteId);
-        return view('consultas.index', compact('consultas', 'paciente'));
+        // Recuperar todas las consultas sin filtrar por paciente_id
+        $consultas = Consulta::all();
+
+        // Retornar la vista con las consultas
+        return view('consultas.index', compact('consultas'));
     }
 
-    public function create(Request $request)
+    public function show($id)
     {
-        $pacienteId = $request->query('paciente_id');
+        $consulta = Consulta::with(['doctor', 'paciente', 'signosVitales', 'recetas', 'servicios', 'venta'])->findOrFail($id);
+        return view('consultas.show', compact('consulta'));
+    }
+
+    public function create(Request $request, $pacienteId)
+    {
         $doctores = Doctores::all();
-        return view('consultas.create', compact('pacienteId', 'doctores'));
+        $paciente = Pacientes::findOrFail($pacienteId);
+        $productos = Productos::all(); // Obtener todos los productos
+        $servicios = Servicios::all(); // Obtener todos los servicios
+
+        return view('consultas.create', compact('paciente', 'doctores', 'productos', 'servicios'));
     }
 
     public function store(Request $request)
@@ -46,7 +57,10 @@ class ConsultaController extends Controller
             'duracion.*' => 'nullable|string',
         ]);
 
+        // Crear la consulta
         $consulta = Consulta::create([
+            'paciente_id' => $request->paciente_id,
+            'doctor_id' => $request->doctor_id,
             'correo' => $request->correo,
             'nombre' => $request->nombre,
             'motivo_consulta' => $request->motivo_consulta,
@@ -58,6 +72,7 @@ class ConsultaController extends Controller
             'total_a_pagar' => $request->total_a_pagar,
         ]);
 
+        // Crear recetas si se han proporcionado
         if ($request->medicamento) {
             foreach ($request->medicamento as $index => $medicamento) {
                 Receta::create([
@@ -72,7 +87,7 @@ class ConsultaController extends Controller
             }
         }
 
-        return redirect()->route('consultas.index', ['paciente_id' => $request->paciente_id])
-        ->with('success', 'Consulta creada exitosamente.');
+        return redirect()->route('consultas.index')
+            ->with('success', 'Consulta creada exitosamente.');
     }
 }

@@ -37,4 +37,18 @@ class Consulta extends Model
     {
         return $this->belongsTo(Doctores::class, 'doctor_id');
     }
+    public function servicios()
+    {
+        return $this->belongsToMany(Servicios::class, 'consulta_servicio', 'consulta_id', 'servicio_id')
+                    ->withPivot('cantidad', 'precio', 'notas_servicio');
+    }
+    public function signosVitales()
+    {
+        return $this->hasOne(SignosVitales::class, 'consulta_id');
+    }
+    public function venta()
+    {
+        return $this->hasOne(Venta::class);
+    }
+
 }
