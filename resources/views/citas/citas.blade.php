@@ -15,6 +15,10 @@
     </a>
 </div>
 
+<button id="openModalButton" class="px-4 py-2 font-medium text-white bg-blue-500 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    Ver Citas del Día
+</button>
+
 <div class="flex mt-6">
     <!-- Calendario -->
     <div id='calendar-wrap' class="flex-1 p-4 mr-4 bg-white rounded-lg shadow-lg">
@@ -43,7 +47,6 @@
                             <td class="px-4 py-2">{{ $cita->fecha }}</td>
                             <td class="px-4 py-2">{{ $cita->hora }}</td>
                             <td class="px-4 py-2">{{ $cita->estado }}</td>
-                            <td class="px-4 py-2">{{ $cita->detalles }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -51,7 +54,6 @@
         </div>
     </div>
 </div>
-
 <style>
     body {
         margin-top: 40px;
@@ -117,32 +119,123 @@
         background-color: #FF6F61;
         color: white;
     }
-</style>
+    #modalCita {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+    align-items: center;
+    justify-content: center;
+    z-index: 100; /* Asegura que esté por encima de otros elementos */
+}
 
-<div id="modalCita" class="fixed inset-0 hidden overflow-y-auto bg-gray-600 bg-opacity-50" onclick="if(event.target.id === 'modalCita') { closeModal(); }">
-    <div class="relative p-5 mx-auto bg-white border rounded-md shadow-lg top-20 w-96">
-        <div class="mt-3 text-center">
-            <div id="modalContent" class="p-4 text-left">
-                <!-- Contenido del modal será insertado aquí -->
-            </div>
-            <div class="items-center px-4 py-3">
-                <button id="closeButton" class="w-full px-4 py-2 text-base font-medium text-white bg-red-500 rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500" onclick="closeModal()">
-                    Cerrar
-                </button>
-                <button id="closeButton" class="w-full px-4 py-2 text-base font-medium text-white bg-red-500 rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500" onclick="closeModal()">
-                    Completar
-                </button>
-                <button id="closeButton" class="w-full px-4 py-2 text-base font-medium text-white bg-red-500 rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500" onclick="closeModal()">
-                    Cancelar
-                </button>
-                <button id="closeButton" class="w-full px-4 py-2 text-base font-medium text-white bg-red-500 rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500" onclick="closeModal()">
-                    Editar
-                </button>
-            </div>
+#modalCita .modal-content {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#modalCita h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#modalCita table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#modalCita th, #modalCita td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+#modalCita th {
+    background-color: #f9f9f9;
+}
+
+#modalCita .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+#modalCita button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #ff4b5c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#modalCita button:hover {
+    background-color: #e43d50;
+}
+</style>
+<!-- Modal -->
+<div id="modalCita" class="fixed inset-0 items-center justify-center hidden overflow-y-auto bg-gray-800 bg-opacity-75">
+    <div class="relative w-full max-w-3xl mx-auto bg-white border border-gray-300 rounded-lg shadow-xl">
+        <div class="flex items-center justify-between p-4 border-b border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800">Citas del día <span id="modal-date"></span></h3>
+            <button class="text-gray-500 hover:text-gray-700" onclick="closeModal()">
+                <ion-icon name="close-circle-outline" class="text-2xl"></ion-icon>
+            </button>
+        </div>
+        <div class="p-4">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr>
+                        <th class="py-2 border-b">No</th>
+                        <th class="py-2 border-b">Doctor</th>
+                        <th class="py-2 border-b">Paciente</th>
+                        <th class="py-2 border-b">Hora</th>
+                        <th class="py-2 border-b">Estado</th>
+                        <th class="py-2 border-b">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="modal-appointment-list-body">
+                    @foreach ($citas as $cita)
+                        <tr class="hover:bg-gray-100">
+                            <td class="px-2 py-2 border-b">{{ $cita->id }}</td>
+                            <td class="px-2 py-2 border-b">{{ $cita->doctor->nombres }} {{ $cita->doctor->apellidos }}</td>
+                            <td class="px-2 py-2 border-b">{{ $cita->paciente->nombres }} {{ $cita->paciente->apellidos }}</td>
+                            <td class="px-2 py-2 border-b">{{ $cita->hora }}</td>
+                            <td class="px-2 py-2 border-b">
+                                <span class="px-2 py-1 text-xs font-semibold rounded-full {{ $cita->estado == 'En proceso' ? 'bg-yellow-100 text-yellow-800' : ($cita->estado == 'Completada' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800') }}">
+                                    {{ ucfirst($cita->estado) }}
+                                </span>
+                            </td>
+                            <td class="px-2 py-2 border-b">
+                                @if ($cita->estado == 'En proceso')
+                                    <a href="{{ route('citas.cambiarEstado', ['id' => $cita->id, 'estado' => 'Completada']) }}" class="text-blue-600 hover:text-blue-800">Completar</a> |
+                                    <a href="{{ route('citas.cambiarEstado', ['id' => $cita->id, 'estado' => 'Cancelada']) }}" class="text-red-600 hover:text-red-800">Cancelar</a>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <div class="p-4 text-right border-t border-gray-200">
+            <button id="closeButton" class="px-4 py-2 font-medium text-white bg-red-500 rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500" onclick="closeModal()">
+                Cerrar
+            </button>
         </div>
     </div>
 </div>
 
+<!-- Custom Script -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Inicializar el calendario
@@ -176,6 +269,7 @@
         calendar.render();
     });
 
+    // Abrir y cerrar el modal
     function openModal(content) {
         document.getElementById('modalContent').innerHTML = content;
         document.getElementById('modalCita').classList.remove('hidden');
@@ -184,5 +278,25 @@
     function closeModal() {
         document.getElementById('modalCita').classList.add('hidden');
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Obtener elementos del DOM
+        var modal = document.getElementById('modalCita');
+        var openModalButton = document.getElementById('openModalButton');
+        var closeModalButtons = document.querySelectorAll('#modalCita #closeButton');
+
+        // Función para abrir el modal
+        openModalButton.addEventListener('click', function() {
+            modal.classList.remove('hidden');
+        });
+
+        // Función para cerrar el modal
+        closeModalButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                modal.classList.add('hidden');
+            });
+        });
+    });
 </script>
+
 @endsection

@@ -20,10 +20,8 @@ class CitasController extends Controller
 
         // Filtrar las citas según el rol del usuario
         if ($user->rol === 'Paciente') {
-            // Si el usuario es un paciente, solo ver sus propias citas
             $citas = Citas::where('paciente_id', $user->id)->get();
         } else {
-            // Si el usuario es un doctor, ver todas las citas
             $citas = Citas::all();
         }
 
@@ -41,8 +39,8 @@ class CitasController extends Controller
     {
         // Validar datos de entrada
         $request->validate([
-            'paciente_id_hidden' => 'required|exists:pacientes,id',
-            'doctor_id_hidden' => 'required|exists:doctores,id',
+            'paciente_id' => 'required|exists:pacientes,id',
+            'doctor_id' => 'required|exists:doctores,id',
             'fecha' => 'required|date|after_or_equal:today',
             'hora' => 'required|date_format:H:i:s', // Asegurar el formato correcto
             'estado' => 'required|in:Completada,Cancelada,En curso',
@@ -59,11 +57,11 @@ class CitasController extends Controller
 
         // Crear la cita con el estado "En curso" por defecto
         Citas::create([
-            'paciente_id' => $request->paciente_id_hidden,
-            'doctor_id' => $request->doctor_id_hidden,
+            'paciente_id' => $request->paciente_id,
+            'doctor_id' => $request->doctor_id,
             'fecha' => $request->fecha,
             'hora' => $request->hora,
-            'estado' => 'En curso',
+            'estado' => 'En proceso',
         ]);
 
         return redirect()->route('citas.index')->with('success', 'Cita creada exitosamente.');
@@ -81,7 +79,6 @@ class CitasController extends Controller
                               ->pluck('hora')
                               ->toArray();
 
-        // Suponiendo que las citas son de 30 minutos y que trabajan en horas de oficina
         $todasLasHoras = $this->generarHoras($inicio, $fin);
         $horasDisponibles = array_diff($todasLasHoras, $horasOcupadas);
 
@@ -94,8 +91,8 @@ class CitasController extends Controller
         $end = Carbon::createFromFormat('H:i', $fin);
 
         while ($start < $end) {
-            $horas[] = $start->format('H:i:s'); // Asegurar el formato correcto
-            $start->addMinutes(30); // incremento cada 30 minutos
+            $horas[] = $start->format('H:i:s');
+            $start->addMinutes(30);
         }
 
         return $horas;
@@ -113,4 +110,12 @@ class CitasController extends Controller
 
         return response()->json($horasOcupadas);
     }
+    public function cambiarEstado($id, $estado)
+{
+    $cita = Citas::findOrFail($id);
+    $cita->estado = $estado;
+    $cita->save();
+
+    return redirect()->route('citas.lista')->with('success', 'El estado de la cita ha sido actualizado.');
+}
 }
