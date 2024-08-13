@@ -8,7 +8,12 @@ use App\Models\Doctores;
 use App\Models\Pacientes;
 use App\Models\Productos;
 use App\Models\Servicios;
+use App\Models\SignosVitales;
+use App\Models\ConsultaServicio;
+use App\Models\Venta;
+use App\Models\VentaItem;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class ConsultaController extends Controller
 {
@@ -51,11 +56,18 @@ class ConsultaController extends Controller
             'diagnostico' => 'nullable|string',
             'plan' => 'nullable|string',
             'total_a_pagar' => 'required|numeric',
+            'talla' => 'required|numeric',
+            'temperatura' => 'required|numeric',
+            'frecuencia_cardiaca' => 'required|numeric',
+            'saturacion_oxigeno' => 'required|numeric',
             'medicamento.*' => 'nullable|string',
             'dosis.*' => 'nullable|string',
             'frecuencia.*' => 'nullable|string',
             'duracion.*' => 'nullable|string',
         ]);
+
+        // Establecer la zona horaria de Mexico City
+        $fecha = Carbon::now('America/Mexico_City');
 
         // Crear la consulta
         $consulta = Consulta::create([
@@ -70,6 +82,17 @@ class ConsultaController extends Controller
             'diagnostico' => $request->diagnostico,
             'plan' => $request->plan,
             'total_a_pagar' => $request->total_a_pagar,
+            'created_at' => $fecha,
+            'updated_at' => $fecha,
+        ]);
+
+        // Guardar los signos vitales
+        SignosVitales::create([
+            'consulta_id' => $consulta->id,
+            'talla' => $request->talla,
+            'temperatura' => $request->temperatura,
+            'frecuencia_cardiaca' => $request->frecuencia_cardiaca,
+            'saturacion_oxigeno' => $request->saturacion_oxigeno,
         ]);
 
         // Crear recetas si se han proporcionado
@@ -84,6 +107,50 @@ class ConsultaController extends Controller
                     'frecuencia' => $request->frecuencia[$index],
                     'duracion' => $request->duracion[$index],
                 ]);
+            }
+        }
+
+        // Guardar los servicios seleccionados en la tabla consulta_servicio
+        if ($request->has('servicio')) {
+            foreach ($request->servicio as $index => $servicioId) {
+                $servicio = Servicios::find($servicioId);
+                $cantidad = $request->cantidad_servicio[$index];
+
+                if ($servicio) {
+                    ConsultaServicio::create([
+                        'consulta_id' => $consulta->id,
+                        'servicio_id' => $servicio->id,
+                        'cantidad' => $cantidad,
+                        'precio' => $servicio->precio * $cantidad,
+                        'notas_servicio' => $request->notas_servicio ?? '', // Puedes guardar notas si están disponibles
+                    ]);
+                }
+            }
+        }
+
+        // Crear una nueva venta y sus items correspondientes
+        if ($request->has('productos')) {
+            $venta = Venta::create([
+                'consulta_id' => $consulta->id,
+                'total' => $request->total_a_pagar, // Se puede ajustar según la lógica de negocio
+            ]);
+
+            foreach ($request->productos as $index => $precioProducto) {
+                $productoId = $request->productos[$index];
+                $cantidad = $request->cantidad_producto[$index];
+                $producto = Productos::find($productoId);
+
+                if ($producto) {
+                    $subtotal = $producto->precio * $cantidad;
+
+                    VentaItem::create([
+                        'venta_id' => $venta->id,
+                        'nombre' => $producto->nombre,
+                        'cantidad' => $cantidad,
+                        'precio' => $producto->precio,
+                        'subtotal' => $producto->precio,
+                    ]);
+                }
             }
         }
 

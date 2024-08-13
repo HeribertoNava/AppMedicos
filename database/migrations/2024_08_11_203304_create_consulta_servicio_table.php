@@ -10,17 +10,17 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up()
-{
-    Schema::create('consulta_servicio', function (Blueprint $table) {
-        $table->id();
-        $table->foreignId('consulta_id')->constrained()->onDelete('cascade');
-        $table->foreignId('servicio_id')->constrained()->onDelete('cascade');
-        $table->integer('cantidad');
-        $table->decimal('precio', 10, 2);
-        $table->text('notas_servicio')->nullable();
-        $table->timestamps();
-    });
-}
+    {
+        Schema::create('consulta_servicio', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('consulta_id')->constrained('consultas')->onDelete('cascade');
+            $table->foreignId('servicio_id')->constrained('servicios')->onDelete('cascade');
+            $table->integer('cantidad');
+            $table->decimal('precio', 10, 2);
+            $table->text('notas_servicio')->nullable();
+            $table->timestamps();
+        });
+    }
 
     /**
      * Reverse the migrations.
