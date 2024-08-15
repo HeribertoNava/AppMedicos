@@ -43,7 +43,7 @@ class CitasController extends Controller
             'doctor_id' => 'required|exists:doctores,id',
             'fecha' => 'required|date|after_or_equal:today',
             'hora' => 'required|date_format:H:i:s', // Asegurar el formato correcto
-            'estado' => 'required|in:Completada,Cancelada,En curso',
+            'estado' => 'required|in:Completada,Cancelada,En proceso',
         ]);
 
         // Obtener la fecha y hora ingresadas
@@ -55,7 +55,7 @@ class CitasController extends Controller
             return back()->withErrors(['hora' => 'La cita debe ser agendada con al menos 3 horas de anticipación.'])->withInput();
         }
 
-        // Crear la cita con el estado "En curso" por defecto
+        // Crear la cita con el estado "En proceso" por defecto
         Citas::create([
             'paciente_id' => $request->paciente_id,
             'doctor_id' => $request->doctor_id,
@@ -110,12 +110,47 @@ class CitasController extends Controller
 
         return response()->json($horasOcupadas);
     }
-    public function cambiarEstado($id, $estado)
-{
-    $cita = Citas::findOrFail($id);
-    $cita->estado = $estado;
-    $cita->save();
 
-    return redirect()->route('citas.lista')->with('success', 'El estado de la cita ha sido actualizado.');
-}
+    public function cambiarEstado($id, $estado)
+    {
+        $cita = Citas::findOrFail($id);
+        $cita->estado = $estado;
+        $cita->save();
+
+        return redirect()->route('citas.lista')->with('success', 'El estado de la cita ha sido actualizado.');
+    }
+
+    public function lista(Request $request)
+    {
+        // Filtrar según el estado de las citas
+        $filtro = $request->input('filtro', 'hoy');
+
+        switch ($filtro) {
+            case 'hoy':
+                $citas = Citas::with(['paciente', 'doctor'])
+                    ->whereDate('fecha', Carbon::today())
+                    ->paginate(10);
+                break;
+            case 'en_proceso':
+                $citas = Citas::with(['paciente', 'doctor'])
+                    ->where('estado', 'En proceso')
+                    ->paginate(10);
+                break;
+            case 'completadas':
+                $citas = Citas::with(['paciente', 'doctor'])
+                    ->where('estado', 'Completada')
+                    ->paginate(10);
+                break;
+            case 'canceladas':
+                $citas = Citas::with(['paciente', 'doctor'])
+                    ->where('estado', 'Cancelada')
+                    ->paginate(10);
+                break;
+            default:
+                $citas = Citas::with(['paciente', 'doctor'])->paginate(10);
+                break;
+        }
+
+        return view('citas.lista', compact('citas', 'filtro'));
+    }
 }

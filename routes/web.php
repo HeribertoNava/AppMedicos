@@ -73,6 +73,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/citas/{secretaria}', [CitasController::class, 'eliminar'])->name('citas.eliminar');
     Route::get('/citas/horas-ocupadas', [CitasController::class, 'getHorasOcupadas'])->name('citas.horas-ocupadas');
     Route::get('/citas/cambiar-estado/{id}/{estado}', [CitasController::class, 'cambiarEstado'])->name('citas.cambiarEstado');
+    Route::get('/citas/lista', [CitasController::class, 'lista'])->name('citas.lista');
+
 
 
 
@@ -100,10 +102,11 @@ Route::middleware('auth')->group(function () {
 
 
     Route::get('/consultas', [ConsultaController::class, 'index'])->name('consultas.index');
-    Route::get('/consultas/create', [ConsultaController::class, 'create'])->name('consultas.create');
+    Route::get('/consultas/crear/{pacienteId}', [ConsultaController::class, 'create'])->name('consultas.create');
     Route::post('/consultas', [ConsultaController::class, 'store'])->name('consultas.store');
     Route::get('/consultas/{id}', [ConsultaController::class, 'show'])->name('consultas.show');
-    Route::get('/consultas/{paciente}/create', [ConsultaController::class, 'create'])->name('consultas.create');
+
+
 
 
 

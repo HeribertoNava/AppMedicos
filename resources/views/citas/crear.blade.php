@@ -86,7 +86,7 @@
                     <div class="md:col-span-5">
                         <label for="estado">Estado</label>
                         <select name="estado" id="estado" class="w-full h-10 px-4 mt-1 border rounded bg-gray-50">
-                            <option value="En curso" {{ old('estado') == 'En curso' ? 'selected' : '' }}>En curso</option>
+                            <option value="En proceso" {{ old('estado') == 'En proceso' ? 'selected' : '' }}>En proceso</option>
                         </select>
                     </div>
 

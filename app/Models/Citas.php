@@ -28,4 +28,5 @@ class Citas extends Model
     {
         return $this->belongsTo(Doctores::class, 'doctor_id');
     }
+
 }

@@ -1,5 +1,4 @@
 @if (Auth::user()->hasRole('Doctor'))
-
 @extends('layouts.app')
 
 @section('content')
@@ -31,13 +30,29 @@
             <select id="doctor_id" name="doctor_id" class="w-full p-3 border-gray-300 rounded-lg focus:ring focus:ring-blue-200">
                 <option value="">Seleccione un doctor</option>
                 @foreach($doctores as $doctor)
-                    <option value="{{ $doctor->id }}">{{ $doctor->nombres }} {{ $doctor->apellidos }}</option>
+                    <option value="{{ $doctor->id }}" {{ isset($doctorId) && $doctorId == $doctor->id ? 'selected' : '' }}>
+                        {{ $doctor->nombres }} {{ $doctor->apellidos }}
+                    </option>
                 @endforeach
             </select>
             @error('doctor_id')
                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
             @enderror
         </div>
+
+
+        <!-- Fecha y Hora (solo si es a partir de una cita) -->
+
+        <div class="space-y-4">
+            @if(isset($fecha) && isset($hora))
+                <label for="fecha" class="block text-gray-600"><ion-icon name="calendar-outline" class="mr-2"></ion-icon> Fecha</label>
+                <input type="text" id="fecha" name="fecha" class="w-full p-3 border-gray-300 rounded-lg focus:ring focus:ring-blue-200" value="{{ $fecha }}" readonly />
+
+                <label for="hora" class="block text-gray-600"><ion-icon name="time-outline" class="mr-2"></ion-icon> Hora</label>
+                <input type="text" id="hora" name="hora" class="w-full p-3 border-gray-300 rounded-lg focus:ring focus:ring-blue-200" value="{{ $hora }}" readonly />
+            @endif
+        </div>
+
 
         <!-- Signos vitales -->
         <div class="space-y-4">

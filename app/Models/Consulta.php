@@ -20,7 +20,8 @@ class Consulta extends Model
         'examen_fisico',
         'diagnostico',
         'plan',
-        'total_a_pagar'
+        'total_a_pagar',
+        'cita_id'
     ];
 
     public function recetas()
@@ -49,6 +50,10 @@ class Consulta extends Model
     public function venta()
     {
         return $this->hasOne(Venta::class);
+    }
+    public function cita()
+    {
+        return $this->belongsTo(Citas::class, 'cita_id');
     }
 
 }

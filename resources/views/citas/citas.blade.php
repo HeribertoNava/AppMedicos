@@ -10,7 +10,7 @@
         Agregar Cita
     </a>
     @endif
-    <a href="{{ route('citas.index') }}" class="px-4 py-2 text-sm font-medium text-center text-black bg-[#FFE5EC] rounded-lg hover:bg-[#FFC2D1] focus:ring-4 focus:outline-none focus:ring-[#FFB3C6] transition duration-300">
+    <a href="{{ route('citas.lista') }}" class="px-4 py-2 text-sm font-medium text-center text-black bg-[#FFE5EC] rounded-lg hover:bg-[#FFC2D1] focus:ring-4 focus:outline-none focus:ring-[#FFB3C6] transition duration-300">
         Ver lista de citas
     </a>
 </div>

@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Models\Venta;
 use App\Models\Receta;
 use App\Models\Consulta;
+use App\Models\Citas;
 use App\Models\Doctores;
 use App\Models\Pacientes;
 use App\Models\Productos;
 use App\Models\Servicios;
+use App\Models\VentaItem;
+use Illuminate\View\View;
+use Illuminate\Http\Request;
 use App\Models\SignosVitales;
 use App\Models\ConsultaServicio;
-use App\Models\Venta;
-use App\Models\VentaItem;
-use Illuminate\Http\Request;
-use Carbon\Carbon;
 
 class ConsultaController extends Controller
 {
@@ -39,7 +41,11 @@ class ConsultaController extends Controller
         $productos = Productos::all(); // Obtener todos los productos
         $servicios = Servicios::all(); // Obtener todos los servicios
 
-        return view('consultas.create', compact('paciente', 'doctores', 'productos', 'servicios'));
+        $fecha = $request->input('fecha'); // Obtener la fecha desde la URL
+        $hora = $request->input('hora');   // Obtener la hora desde la URL
+        $doctorId = $request->input('doctorId'); // Obtener el ID del doctor desde la URL
+
+        return view('consultas.create', compact('paciente', 'doctores', 'productos', 'servicios', 'fecha', 'hora', 'doctorId'));
     }
 
     public function store(Request $request)
@@ -156,5 +162,10 @@ class ConsultaController extends Controller
 
         return redirect()->route('consultas.index')
             ->with('success', 'Consulta creada exitosamente.');
+    }
+    public function listaConsultas(): View
+    {
+        $consultas = Consulta::with(['paciente', 'doctor'])->get();
+        return view('consultas.create', compact('consultas'));
     }
 }
