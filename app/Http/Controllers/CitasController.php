@@ -18,12 +18,7 @@ class CitasController extends Controller
 
         $user = Auth::user();
 
-        // Filtrar las citas según el rol del usuario
-        if ($user->rol === 'Paciente') {
-            $citas = Citas::where('paciente_id', $user->id)->get();
-        } else {
-            $citas = Citas::all();
-        }
+
 
         return view('citas.citas', compact('citas'));
     }
@@ -153,4 +148,5 @@ class CitasController extends Controller
 
         return view('citas.lista', compact('citas', 'filtro'));
     }
+
 }

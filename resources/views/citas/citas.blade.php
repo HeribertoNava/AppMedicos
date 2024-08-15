@@ -9,15 +9,16 @@
     <a href="{{ route('citas.crear') }}" class="px-4 py-2 text-sm font-medium text-center text-black bg-[#FFE5EC] rounded-lg hover:bg-[#FFC2D1] focus:ring-4 focus:outline-none focus:ring-[#FFB3C6] transition duration-300">
         Agregar Cita
     </a>
-    @endif
     <a href="{{ route('citas.lista') }}" class="px-4 py-2 text-sm font-medium text-center text-black bg-[#FFE5EC] rounded-lg hover:bg-[#FFC2D1] focus:ring-4 focus:outline-none focus:ring-[#FFB3C6] transition duration-300">
         Ver lista de citas
     </a>
+    <button id="openModalButton" class="px-4 py-2 font-medium text-white bg-blue-500 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        Ver Citas del Día
+    </button>
+    @endif
 </div>
 
-<button id="openModalButton" class="px-4 py-2 font-medium text-white bg-blue-500 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-    Ver Citas del Día
-</button>
+
 
 <div class="flex mt-6">
     <!-- Calendario -->

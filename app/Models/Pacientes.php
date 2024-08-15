@@ -22,20 +22,6 @@ class Pacientes extends Authenticatable
 
     ];
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-
-    }
-
     // Relación con Citas
     public function citas()
     {
@@ -46,3 +32,4 @@ class Pacientes extends Authenticatable
         return $this->hasMany(Consulta::class, 'paciente_id');
     }
 }
+

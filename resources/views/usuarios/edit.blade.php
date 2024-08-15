@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <h1>Editar Usuario</h1>
+<div class="container mx-auto p-6">
+    <h1 class="mb-6 text-3xl font-bold text-center text-pink-600">Editar Usuario</h1>
 
     @if($errors->any())
-        <div class="alert alert-danger">
+        <div class="p-4 mb-6 text-white bg-red-500 rounded-lg">
             <ul>
                 @foreach($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -14,43 +14,63 @@
         </div>
     @endif
 
-    <form action="{{ route('usuarios.update', $usuario->id) }}" method="POST">
+    <form action="{{ route('usuarios.update', $usuario->id) }}" method="POST" class="p-6 bg-white rounded-lg shadow-lg space-y-6">
         @csrf
         @method('PUT')
-        <div class="form-group">
-            <label for="nombre">Nombre</label>
-            <input type="text" name="nombre" class="form-control" value="{{ old('nombre', $usuario->nombre) }}" required>
+
+        <!-- Nombre -->
+        <div>
+            <label for="nombre" class="block text-gray-700">Nombre</label>
+            <input type="text" name="nombre" class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring-pink-300 focus:border-pink-500" value="{{ old('nombre', $usuario->nombre) }}" required>
         </div>
-        <div class="form-group">
-            <label for="apellido">Apellido</label>
-            <input type="text" name="apellido" class="form-control" value="{{ old('apellido', $usuario->apellido) }}" required>
+
+        <!-- Apellido -->
+        <div>
+            <label for="apellido" class="block text-gray-700">Apellido</label>
+            <input type="text" name="apellido" class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring-pink-300 focus:border-pink-500" value="{{ old('apellido', $usuario->apellido) }}" required>
         </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" name="email" class="form-control" value="{{ old('email', $usuario->email) }}" required>
+
+        <!-- Email -->
+        <div>
+            <label for="email" class="block text-gray-700">Email</label>
+            <input type="email" name="email" class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring-pink-300 focus:border-pink-500" value="{{ old('email', $usuario->email) }}" required>
         </div>
-        <div class="form-group">
-            <label for="password">Contraseña</label>
-            <input type="password" name="password" class="form-control">
+
+        <!-- Contraseña -->
+        <div>
+            <label for="password" class="block text-gray-700">Contraseña</label>
+            <input type="password" name="password" class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring-pink-300 focus:border-pink-500">
         </div>
-        <div class="form-group">
-            <label for="password_confirmation">Confirmar Contraseña</label>
-            <input type="password" name="password_confirmation" class="form-control">
+
+        <!-- Confirmar Contraseña -->
+        <div>
+            <label for="password_confirmation" class="block text-gray-700">Confirmar Contraseña</label>
+            <input type="password" name="password_confirmation" class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring-pink-300 focus:border-pink-500">
         </div>
-        <div class="form-group">
-            <label for="telefono">Teléfono</label>
-            <input type="text" name="telefono" class="form-control" value="{{ old('telefono', $usuario->telefono) }}">
+
+        <!-- Teléfono -->
+        <div>
+            <label for="telefono" class="block text-gray-700">Teléfono</label>
+            <input type="text" name="telefono" class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring-pink-300 focus:border-pink-500" value="{{ old('telefono', $usuario->telefono) }}">
         </div>
-        <div class="form-group">
-            <label for="rol">Rol</label>
-            <select name="rol" class="form-control" required>
+
+        <!-- Rol -->
+        <div>
+            <label for="rol" class="block text-gray-700">Rol</label>
+            <select name="rol" class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring-pink-300 focus:border-pink-500" required>
                 <option value="Doctor" {{ $usuario->rol == 'Doctor' ? 'selected' : '' }}>Doctor</option>
                 <option value="Paciente" {{ $usuario->rol == 'Paciente' ? 'selected' : '' }}>Paciente</option>
                 <option value="Secretaria" {{ $usuario->rol == 'Secretaria' ? 'selected' : '' }}>Secretaria</option>
                 <option value="Enfermera" {{ $usuario->rol == 'Enfermera' ? 'selected' : '' }}>Enfermera</option>
             </select>
         </div>
-        <button type="submit" class="btn btn-primary">Actualizar</button>
+
+        <!-- Botón de Actualizar -->
+        <div class="text-center">
+            <button type="submit" class="px-4 py-2 font-semibold text-white bg-pink-500 rounded-lg hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-400 focus:ring-opacity-75">
+                Actualizar
+            </button>
+        </div>
     </form>
 </div>
 @endsection

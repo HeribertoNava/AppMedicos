@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pacientes;
+use App\Models\Citas;
 use App\Models\Usuario;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Validation\Rules;
+use App\Models\Pacientes;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Auth\Events\Registered;
 
 class PacientesController extends Controller
 {
@@ -120,5 +121,18 @@ class PacientesController extends Controller
     $paciente = Pacientes::with(['citas.doctor', 'consultas'])->findOrFail($id);
 
     return view('pacientes.historial', compact('paciente'));
+}
+
+public function mostrarCitas()
+{
+    $user = auth()->user();
+
+    if ($user->rol === 'Paciente') {
+        $citas = Citas::where('paciente_id', $user->id)->with('doctor')->get();
+    } else {
+        $citas = Citas::with('doctor', 'paciente')->get();
+    }
+
+    return view('citas.lista', compact('citas'));
 }
 }

@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CitasController;
+use App\Http\Controllers\VentaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ConsultaController;
@@ -39,9 +40,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/pacientes', [PacientesController::class, 'index'])->name('pacientes.index');
     Route::get('/pacientes/crear', [PacientesController::class, 'crear'])->name('pacientes.crear');
     Route::post('/pacientes', [PacientesController::class, 'store'])->name('pacientes.store');
-    Route::get('/pacientes/{paciente}/editar', [PacientesController::class, 'editar'])->name('pacientes.editar');
-    Route::put('/pacientes/{paciente}', [PacientesController::class, 'actualizar'])->name('pacientes.actualizar');
-    Route::delete('/pacientes/{paciente}', [PacientesController::class, 'eliminar'])->name('pacientes.eliminar');
+    Route::get('/pacientes/{id}/editar', [PacientesController::class, 'editar'])->name('pacientes.editar');
+    Route::put('/pacientes/{id}', [PacientesController::class, 'actualizar'])->name('pacientes.actualizar');
+    Route::delete('/pacientes/{id}', [PacientesController::class, 'eliminar'])->name('pacientes.eliminar');
     Route::get('/pacientes/{id}/historial', [PacientesController::class, 'historial'])->name('pacientes.historial');
 
 
@@ -82,7 +83,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/citas/lista', [CitasController::class, 'lista'])->name('citas.lista');
 
 
-
+    //Rutas para Ventas
+    Route::get('/ventas', [VentaController::class, 'index'])->name('ventas.index');
+    Route::get('/ventas/{id}', [VentaController::class, 'show'])->name('ventas.show');
 
 
     //Ruta para usuarios
