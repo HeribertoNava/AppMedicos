@@ -26,99 +26,46 @@
     </div>
 
     <!-- Historial de citas -->
-    <div class="flex-1 p-4 ml-4 bg-white rounded-lg shadow-lg">
-        <h2 class="mb-4 text-xl font-semibold">Historial de Citas</h2>
+    <div class="flex-1 p-4 ml-4 rounded-lg shadow-lg bg-pink-50">
+        <h2 class="mb-4 text-xl font-semibold text-pink-700">Historial de Citas</h2>
         <div class="overflow-x-auto">
-            <table class="min-w-full bg-white border border-gray-200">
-                <thead class="text-white bg-gray-800">
+            <table class="min-w-full bg-pink-100 border border-pink-200 rounded-lg">
+                <thead class="text-pink-800 bg-pink-200">
                     <tr>
-                        <th class="px-4 py-2">No</th>
-                        <th class="px-4 py-2">Doctor</th>
-                        <th class="px-4 py-2">Paciente</th>
-                        <th class="px-4 py-2">Hora</th>
-                        <th class="px-4 py-2">Estado</th>
+                        <th class="px-2 py-1 text-sm">No</th>
+                        <th class="px-2 py-1 text-sm">Doctor</th>
+                        <th class="px-2 py-1 text-sm">Paciente</th>
+                        <th class="px-2 py-1 text-sm">Hora</th>
+                        <th class="px-2 py-1 text-sm">Estado</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($citas as $cita)
-                        <tr class="bg-gray-100 border-b border-gray-200">
-                            <td class="px-4 py-2">{{ $cita->paciente->nombres }} {{ $cita->paciente->apellidos }}</td>
-                            <td class="px-4 py-2">{{ $cita->doctor->nombres }} {{ $cita->doctor->apellidos }}</td>
-                            <td class="px-4 py-2">{{ $cita->fecha }}</td>
-                            <td class="px-4 py-2">{{ $cita->hora }}</td>
-                            <td class="px-4 py-2">{{ $cita->estado }}</td>
+                        <tr class="border-b border-pink-200 bg-pink-50 hover:bg-pink-100">
+                            <td class="px-2 py-1 text-center">{{ $loop->iteration }}</td>
+                            <td class="px-2 py-1">{{ $cita->doctor->nombres }} {{ $cita->doctor->apellidos }}</td>
+                            <td class="px-2 py-1">{{ $cita->paciente->nombres }} {{ $cita->paciente->apellidos }}</td>
+                            <td class="px-2 py-1">{{ $cita->hora }}</td>
+                            <td class="px-2 py-1">
+                                <span class="
+                                    px-2 py-1 text-xs font-semibold rounded-full
+                                    @if($cita->estado == 'En proceso') bg-yellow-100 text-yellow-800
+                                    @elseif($cita->estado == 'Completada') bg-green-100 text-green-800
+                                    @else bg-red-100 text-red-800
+                                    @endif">
+                                    {{ ucfirst($cita->estado) }}
+                                </span>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
     </div>
-</div>
 <style>
-    body {
-        margin-top: 40px;
-        font-size: 14px;
-        font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
-        background-color: #f8f9fa;
-    }
 
-    #calendar-wrap {
-        width: 100%;
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 10px;
-        background-color: #ffffff;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
 
-    #calendar {
-        max-width: 1000px;
-        margin: 0 auto;
-    }
 
-    .fc-toolbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .fc-button {
-        background-color: #FFE5EC;
-        border: none;
-        color: black;
-        border-radius: 5px;
-        padding: 5px 10px;
-    }
-
-    .fc-button:hover {
-        background-color: #FFC2D1;
-    }
-
-    .fc-toolbar-title {
-        font-size: 1.5rem;
-        font-weight: bold;
-    }
-
-    .fc-view-harness {
-        border: 1px solid #DDD;
-        border-radius: 5px;
-        padding: 10px;
-    }
-
-    .fc-daygrid-day-number {
-        color: #FF6F61;
-    }
-
-    .fc-event {
-        background-color: #FFB3C6;
-        border: 1px solid #FF6F61;
-    }
-
-    .fc-event:hover {
-        background-color: #FF6F61;
-        color: white;
-    }
     #modalCita {
     position: fixed;
     top: 0;
@@ -238,36 +185,88 @@
 <!-- Custom Script -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Inicializar el calendario
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            headerToolbar: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-            },
-            editable: true,
-            droppable: true, // Permitir arrastrar eventos al calendario
-            events: {!! json_encode($citas->map(function($cita) {
-                return [
-                    'title' => $cita->paciente->nombres . ' ' . $cita->paciente->apellidos,
-                    'start' => $cita->fecha . 'T' . $cita->hora,
-                    'extendedProps' => [
-                        'id' => $cita->id,
-                        'detalles' => $cita->detalles,
-                        'doctor' => $cita->doctor->nombres . ' ' . $cita->doctor->apellidos,
-                        'estado' => $cita->estado
-                    ]
-                ];
-            })->toArray()) !!},
-            eventClick: function(info) {
-                var content = `<h3>${info.event.title}</h3><p>Detalles: ${info.event.extendedProps.detalles}</p><p>Doctor: ${info.event.extendedProps.doctor}</p><p>Estado: ${info.event.extendedProps.estado}</p><p>Fecha: ${info.event.start.toISOString().slice(0, 10)}</p>`;
-                openModal(content);
+    // Inicializar el calendario
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+        },
+        editable: true,
+        droppable: true, // Permitir arrastrar eventos al calendario
+        initialView: 'dayGridMonth',
+        themeSystem: 'bootstrap', // Usar el sistema de temas de Bootstrap para mejorar la apariencia
+        events: {!! json_encode($citas->map(function($cita) {
+            return [
+                'title' => $cita->paciente->nombres . ' ' . $cita->paciente->apellidos,
+                'start' => $cita->fecha . 'T' . $cita->hora,
+                'backgroundColor' => ($cita->estado == 'En proceso') ? '#FFE066' : ($cita->estado == 'Completada' ? '#A3E635' : '#FF6B6B'), // Colores para cada estado
+                'borderColor' => ($cita->estado == 'En proceso') ? '#FFD700' : ($cita->estado == 'Completada' ? '#4CAF50' : '#DC3545'), // Bordes según estado
+                'textColor' => '#4A5568', // Color del texto
+                'extendedProps' => [
+                    'id' => $cita->id,
+                    'detalles' => $cita->detalles,
+                    'doctor' => $cita->doctor->nombres . ' ' . $cita->doctor->apellidos,
+                    'estado' => $cita->estado
+                ]
+            ];
+        })->toArray()) !!},
+        eventClick: function(info) {
+            var content = `<h3>${info.event.title}</h3><p>Detalles: ${info.event.extendedProps.detalles}</p><p>Doctor: ${info.event.extendedProps.doctor}</p><p>Estado: ${info.event.extendedProps.estado}</p><p>Fecha: ${info.event.start.toISOString().slice(0, 10)}</p>`;
+            openModal(content);
+        },
+        dayMaxEventRows: true, // Mostrar máximo número de eventos por día y agregar más si excede
+        views: {
+            dayGridMonth: {
+                eventLimit: 2 // Limitar el número de eventos por día en vista mensual
             }
-        });
-
-        calendar.render();
+        }
     });
+
+    calendar.render();
+});
+
+// CSS para personalizar el estilo del calendario
+document.head.insertAdjacentHTML('beforeend', `
+    <style>
+        .fc-header-toolbar {
+            background-color: #FEE2E2;
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+        }
+        .fc-toolbar-title {
+            color: #D53F8C;
+            font-weight: bold;
+        }
+        .fc-button {
+            background-color: #F472B6;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+        .fc-button:hover {
+            background-color: #EC4899;
+        }
+        .fc-daygrid-event {
+            border-radius: 5px;
+            padding: 2px 5px;
+            font-size: 0.85rem;
+        }
+        .fc-event:hover {
+            opacity: 0.9;
+        }
+        .fc-daygrid-day-number {
+            color: #DB2777;
+        }
+        .fc .fc-today {
+            background-color: #FEE2E2;
+            border-color: #F9A8D4;
+        }
+    </style>
+`);
+
 
     // Abrir y cerrar el modal
     function openModal(content) {
