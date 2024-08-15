@@ -43,7 +43,10 @@
         <div class="space-y-4">
             <h2 class="text-xl font-semibold text-gray-700">Consulta</h2>
             <p><strong>Fecha y Hora de la Consulta:</strong> {{ $consulta->created_at->format('Y-m-d H:i') }}</p>
-            <p><strong>Fecha y Hora de la Cita:</strong> {{ $consulta->cita ? $consulta->cita->fecha . ' ' . $consulta->cita->hora : 'No hay cita programada' }}</p>
+            <!-- Mostrar Fecha y Hora de la Cita si está registrada -->
+            <p><strong>Fecha y Hora de la Cita:</strong>
+                {{ $consulta->cita ? $consulta->cita->fecha . ' ' . $consulta->cita->hora : 'No hay cita programada' }}
+            </p>
         </div>
 
         <div class="space-y-4">

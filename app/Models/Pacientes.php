@@ -41,4 +41,8 @@ class Pacientes extends Authenticatable
     {
         return $this->hasMany(Citas::class, 'paciente_id');
     }
+    public function consultas()
+    {
+        return $this->hasMany(Consulta::class, 'paciente_id');
+    }
 }

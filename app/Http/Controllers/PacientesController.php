@@ -115,4 +115,10 @@ class PacientesController extends Controller
 
         return redirect()->route('pacientes.index')->with('success', 'Paciente eliminado.');
     }
+    public function historial($id)
+{
+    $paciente = Pacientes::with(['citas.doctor', 'consultas'])->findOrFail($id);
+
+    return view('pacientes.historial', compact('paciente'));
+}
 }

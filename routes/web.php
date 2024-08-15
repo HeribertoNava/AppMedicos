@@ -38,6 +38,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/pacientes/{paciente}/editar', [PacientesController::class, 'editar'])->name('pacientes.editar');
     Route::put('/pacientes/{paciente}', [PacientesController::class, 'actualizar'])->name('pacientes.actualizar');
     Route::delete('/pacientes/{paciente}', [PacientesController::class, 'eliminar'])->name('pacientes.eliminar');
+    Route::get('/pacientes/{id}/historial', [PacientesController::class, 'historial'])->name('pacientes.historial');
+
 
     // Rutas para servicios
     Route::get('/servicios', [ServiciosController::class, 'index'])->name('servicios.index');

@@ -189,7 +189,7 @@
         <div class="flex items-center justify-between p-4 border-b border-gray-200">
             <h3 class="text-lg font-semibold text-gray-800">Citas del día <span id="modal-date"></span></h3>
             <button class="text-gray-500 hover:text-gray-700" onclick="closeModal()">
-                <ion-icon name="close-circle-outline" class="text-2xl"></ion-icon>
+                <ion-icon name="close-circle-outline" >x</ion-icon>
             </button>
         </div>
         <div class="p-4">
@@ -219,7 +219,9 @@
                             <td class="px-2 py-2 border-b">
                                 @if ($cita->estado == 'En proceso')
                                     <a href="{{ route('citas.cambiarEstado', ['id' => $cita->id, 'estado' => 'Completada']) }}" class="text-blue-600 hover:text-blue-800">Completar</a> |
-                                    <a href="{{ route('citas.cambiarEstado', ['id' => $cita->id, 'estado' => 'Cancelada']) }}" class="text-red-600 hover:text-red-800">Cancelar</a>
+                                    <a href="{{ route('citas.cambiarEstado', ['id' => $cita->id, 'estado' => 'Cancelada']) }}" class="text-red-600 hover:text-red-800">Cancelar</a> |
+                                    <a href="{{ route('consultas.create', ['pacienteId' => $cita->paciente->id, 'fecha' => $cita->fecha, 'hora' => $cita->hora, 'doctorId' => $cita->doctor->id]) }}" class="btn btn-primary">Crear Consulta</a>
+
                                 @endif
                             </td>
                         </tr>
@@ -228,9 +230,7 @@
             </table>
         </div>
         <div class="p-4 text-right border-t border-gray-200">
-            <button id="closeButton" class="px-4 py-2 font-medium text-white bg-red-500 rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500" onclick="closeModal()">
-                Cerrar
-            </button>
+
         </div>
     </div>
 </div>

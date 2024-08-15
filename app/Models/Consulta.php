@@ -56,4 +56,7 @@ class Consulta extends Model
         return $this->belongsTo(Citas::class, 'cita_id');
     }
 
+
+
+
 }
