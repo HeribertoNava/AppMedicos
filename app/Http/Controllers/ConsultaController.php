@@ -36,6 +36,8 @@ class ConsultaController extends Controller
     {
         $consulta = Consulta::with(['doctor', 'paciente', 'signosVitales', 'recetas', 'servicios', 'venta'])->findOrFail($id);
         return view('consultas.show', compact('consulta'));
+        $consulta = Consulta::with('ventaItems')->findOrFail($id);
+        return view('consultas.show', compact('consulta'));
     }
 
     public function create(Request $request, $pacienteId)
@@ -238,4 +240,5 @@ public function listarColaboraciones()
 
     return view('consultas.colaboracionesIndex', compact('colaboraciones'));
 }
+
 }

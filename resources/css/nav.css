@@ -1,0 +1,132 @@
+nav.navbar {
+    width: 250px;
+    background-color: #FFD6E8;
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+nav .logo {
+    text-align: center;
+    margin: 20px 0;
+}
+
+nav .flex.flex-col.space-y-2 {
+    padding-left: 20px;
+}
+
+nav .px-4.py-2 {
+    padding: 12px 20px;
+    margin: 5px 0;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+nav .px-4.py-2:hover {
+    background-color: #FFB6C1;
+    color: #FFFFFF;
+    transform: translateX(5px);
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+nav .px-4.py-2 svg {
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+nav .dropdown-content {
+    background-color: #FFE5EC;
+    border: 1px solid #FFC2D1;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.flex-1.main-content {
+    margin-left: 270px;
+    padding: 20px;
+    background-color: #FFF0F5;
+}
+
+.button-toggle {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #FF8FAB;
+    border-radius: 30px;
+    margin: 20px 20px 0;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.button-toggle:hover {
+    background-color: #FB6F92;
+    transform: translateX(5px);
+}
+
+.button-toggle svg {
+    margin-right: 10px;
+}
+
+.responsive-menu {
+    display: none;
+    flex-direction: column;
+}
+
+.responsive-menu a {
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 20px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.responsive-menu a:hover {
+    background-color: #FFB6C1;
+    color: #FFFFFF;
+    transform: translateX(5px);
+}
+
+@media (max-width: 768px) {
+    nav.navbar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        box-shadow: none;
+    }
+
+    nav .logo {
+        display: none;
+    }
+
+    nav .flex.flex-col.space-y-2 {
+        flex-direction: row;
+        justify-content: space-around;
+        padding-left: 0;
+    }
+
+    nav .px-4.py-2 {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .flex-1.main-content {
+        margin-left: 0;
+        padding: 20px 10px;
+    }
+
+    .button-toggle {
+        display: none;
+    }
+
+    .responsive-menu {
+        display: flex;
+        padding: 10px 20px;
+    }
+}

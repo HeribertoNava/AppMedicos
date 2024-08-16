@@ -61,6 +61,15 @@ class Consulta extends Model
     }
 
 
+    public function productos()
+    {
+        return $this->belongsToMany(Productos::class)->withPivot('cantidad', 'precio');
+    }
+
+    public function ventaItems()
+    {
+        return $this->hasManyThrough(VentaItem::class, Venta::class, 'consulta_id', 'venta_id');
+    }
 
 
 }
