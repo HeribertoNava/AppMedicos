@@ -184,6 +184,7 @@
         </div>
     </div>
         <!-- Mensajes del Médico Colaborador -->
+    <div class="container p-6 mx-auto">
         <div class="space-y-4">
             <h2 class="text-xl font-semibold text-pink-600">Mensajes del Médico Colaborador</h2>
             @forelse($consulta->colaboraciones as $colaboracion)
@@ -197,7 +198,7 @@
                 <p>No hay mensajes del médico colaborador.</p>
             @endforelse
         </div>
-    
+    </div>
 </div>
 
 <script>

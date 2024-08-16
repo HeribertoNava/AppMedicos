@@ -59,17 +59,16 @@ class Consulta extends Model
     {
         return $this->hasMany(Colaboracion::class);
     }
+    // En el modelo Consulta
 
 
-    public function productos()
-    {
-        return $this->belongsToMany(Productos::class)->withPivot('cantidad', 'precio');
-    }
 
     public function ventaItems()
     {
         return $this->hasManyThrough(VentaItem::class, Venta::class, 'consulta_id', 'venta_id');
     }
+
+
 
 
 }
