@@ -46,7 +46,6 @@
         <div class="space-y-4">
             <h2 class="text-xl font-semibold text-pink-600">Consulta</h2>
             <p><strong>Fecha y Hora de la Consulta:</strong> {{ $consulta->created_at->format('Y-m-d H:i') }}</p>
-            <!-- Mostrar Fecha y Hora de la Cita si está registrada -->
             <p><strong>Fecha y Hora de la Cita:</strong>
                 {{ $consulta->cita ? $consulta->cita->fecha . ' ' . $consulta->cita->hora : 'No hay cita programada' }}
             </p>
@@ -84,6 +83,7 @@
             @endif
         </div>
 
+        <!-- Receta -->
         <div class="space-y-4">
             <h2 class="text-xl font-semibold text-pink-600">Receta</h2>
             <table class="w-full text-left table-auto">
@@ -135,6 +135,37 @@
             </table>
         </div>
 
+        <!-- Productos -->
+        <div class="space-y-4">
+            <h2 class="text-xl font-semibold text-pink-600">Productos</h2>
+            @if($consulta->ventaItems && $consulta->ventaItems->count() > 0)
+                <table class="w-full text-left table-auto">
+                    <thead class="text-pink-600 bg-pink-100">
+                        <tr>
+                            <th class="px-4 py-2">No.</th>
+                            <th class="px-4 py-2">Nombre</th>
+                            <th class="px-4 py-2">Cantidad</th>
+                            <th class="px-4 py-2">Precio</th>
+                            <th class="px-4 py-2">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($consulta->ventaItems as $index => $item)
+                        <tr class="bg-pink-50">
+                            <td class="px-4 py-2">{{ $index + 1 }}</td>
+                            <td class="px-4 py-2">{{ $item->nombre }}</td>
+                            <td class="px-4 py-2">{{ $item->cantidad }}</td>
+                            <td class="px-4 py-2">{{ $item->precio }}</td>
+                            <td class="px-4 py-2">{{ $item->subtotal }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @else
+                <p class="text-gray-600">No hay productos asociados a esta consulta.</p>
+            @endif
+        </div>
+
         <!-- Impuestos y Total -->
         <div class="space-y-4">
             <h2 class="text-xl font-semibold text-pink-600">Total a Pagar</h2>
@@ -153,7 +184,6 @@
         </div>
 
         <!-- Mensajes del Médico Colaborador -->
-        <!-- Mensajes del Médico Colaborador -->
         <div class="space-y-4">
             <h2 class="text-xl font-semibold text-pink-600">Mensajes del Médico Colaborador</h2>
             @forelse($consulta->colaboraciones as $colaboracion)
@@ -167,7 +197,6 @@
                 <p>No hay mensajes del médico colaborador.</p>
             @endforelse
         </div>
-
     </div>
 </div>
 
