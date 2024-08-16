@@ -44,6 +44,7 @@
                         <option value="Doctor">Doctor</option>
                         <option value="Secretaria">Secretaria</option>
                         <option value="Paciente">Paciente</option>
+                        <option value="medico_colaborador">Medico Colaborador</option>
                     </select>
                     <x-input-error :messages="$errors->get('rol')" class="mt-2" />
                 </div>

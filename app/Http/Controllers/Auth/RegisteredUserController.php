@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Usuario;
 use App\Models\Doctores;
 use App\Models\Pacientes;
+use Illuminate\View\View;
 use App\Models\Secretarias;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\RedirectResponse;
+use App\Models\Colaboracion;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
-use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Auth\Events\Registered;
 
 class RegisteredUserController extends Controller
 {
@@ -39,7 +40,7 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users'],
             'telefono' => ['required', 'string', 'max:15'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'rol' => ['required', 'string', 'in:Doctor,Paciente,Secretaria,Usuario'],
+            'rol' => ['required', 'string', 'in:Doctor,Paciente,Secretaria,Usuario,medico_colaborador'],
         ]);
 
         $user = User::create([
@@ -92,10 +93,15 @@ class RegisteredUserController extends Controller
             ]);
         }
 
+        // Eliminar la lógica incorrecta para 'Medico Colaborador'
+        // El rol 'medico_colaborador' ya se maneja como un usuario general,
+        // no se requiere ninguna lógica especial aquí.
+
         event(new Registered($user));
 
         Auth::login($user);
 
         return redirect(route('dashboard'));
     }
+
 }

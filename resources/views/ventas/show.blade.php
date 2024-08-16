@@ -10,7 +10,9 @@
         <p><strong>Total:</strong> {{ number_format($venta->total, 2) }} MXN</p>
     </div>
 
-    <div class="overflow-x-auto">
+    <!-- Sección de Items de Venta -->
+    <div class="mb-6 overflow-x-auto">
+        <h3 class="mb-4 text-xl font-semibold text-pink-600">Productos</h3>
         <table class="min-w-full bg-white rounded-lg shadow-lg">
             <thead class="bg-pink-100">
                 <tr>
@@ -27,6 +29,31 @@
                     <td class="px-6 py-4 border-b border-pink-200">{{ $item->cantidad }}</td>
                     <td class="px-6 py-4 border-b border-pink-200">{{ number_format($item->precio, 2) }} MXN</td>
                     <td class="px-6 py-4 border-b border-pink-200">{{ number_format($item->subtotal, 2) }} MXN</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Sección de Servicios Asociados -->
+    <div class="overflow-x-auto">
+        <h3 class="mb-4 text-xl font-semibold text-pink-600">Servicios Asociados</h3>
+        <table class="min-w-full bg-white rounded-lg shadow-lg">
+            <thead class="bg-pink-100">
+                <tr>
+                    <th class="px-6 py-3 font-semibold text-left text-pink-600">Servicio</th>
+                    <th class="px-6 py-3 font-semibold text-left text-pink-600">Cantidad</th>
+                    <th class="px-6 py-3 font-semibold text-left text-pink-600">Precio</th>
+                    <th class="px-6 py-3 font-semibold text-left text-pink-600">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($venta->consulta->servicios as $servicio)
+                <tr class="hover:bg-pink-50">
+                    <td class="px-6 py-4 border-b border-pink-200">{{ $servicio->nombre }}</td>
+                    <td class="px-6 py-4 border-b border-pink-200">{{ $servicio->pivot->cantidad }}</td>
+                    <td class="px-6 py-4 border-b border-pink-200">{{ number_format($servicio->pivot->precio, 2) }} MXN</td>
+                    <td class="px-6 py-4 border-b border-pink-200">{{ number_format($servicio->pivot->cantidad * $servicio->pivot->precio, 2) }} MXN</td>
                 </tr>
                 @endforeach
             </tbody>

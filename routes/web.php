@@ -114,6 +114,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/consultas/crear/{pacienteId}', [ConsultaController::class, 'create'])->name('consultas.create');
     Route::post('/consultas', [ConsultaController::class, 'store'])->name('consultas.store');
     Route::get('/consultas/{id}', [ConsultaController::class, 'show'])->name('consultas.show');
+    Route::get('/consultas/{id}/compartir', [ConsultaController::class, 'compartir'])->name('consultas.compartir');
+    Route::post('/consultas/{id}/asignar', [ConsultaController::class, 'asignarColaboracion'])->name('consultas.asignarColaboracion');
+    Route::get('/consultas/colaboracion/{id}', [ConsultaController::class, 'verColaboracion'])->name('consultas.verColaboracion');
+    Route::post('/consultas/colaboracion/{id}/enviar', [ConsultaController::class, 'enviarMensaje'])->name('consultas.enviarMensaje');
+    // ruta para medico colaborador
+    Route::get('/colaboraciones', [ConsultaController::class, 'listarColaboraciones'])->name('colaboraciones.index');
 
 
 

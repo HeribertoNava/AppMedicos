@@ -9,8 +9,8 @@ class VentaController extends Controller
 {
     public function index()
     {
-        // Recuperar todas las ventas con los elementos asociados
-        $ventas = Venta::with('items')->get();
+        // Recuperar todas las ventas con los elementos y los servicios asociados
+        $ventas = Venta::with(['items', 'consulta.servicios'])->get();
 
         // Retornar la vista con las ventas
         return view('ventas.index', compact('ventas'));
@@ -18,8 +18,8 @@ class VentaController extends Controller
 
     public function show($id)
     {
-        // Recuperar una venta específica con sus elementos
-        $venta = Venta::with('items')->findOrFail($id);
+        // Recuperar una venta específica con sus elementos y servicios asociados
+        $venta = Venta::with(['items', 'consulta.servicios'])->findOrFail($id);
 
         // Retornar la vista con la venta específica
         return view('ventas.show', compact('venta'));

@@ -182,5 +182,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return times;
     }
 });
+
+
 </script>
 @endsection

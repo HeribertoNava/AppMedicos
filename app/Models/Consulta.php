@@ -55,6 +55,10 @@ class Consulta extends Model
     {
         return $this->belongsTo(Citas::class, 'cita_id');
     }
+    public function colaboraciones()
+    {
+        return $this->hasMany(Colaboracion::class);
+    }
 
 
 

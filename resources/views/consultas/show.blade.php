@@ -13,10 +13,9 @@
             Regresar a Consultas
         </a>
         <div class="flex space-x-2">
-            <button id="share-button" class="px-4 py-2 text-white bg-green-400 rounded-lg hover:bg-green-500">
-                <ion-icon name="share-outline" class="w-5 h-5 mr-2"></ion-icon>
-                Compartir
-            </button>
+            <a href="{{ route('consultas.compartir', $consulta->id) }}" class="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-700">
+                <ion-icon name="share-outline"></ion-icon> Compartir con Médico Colaborador
+            </a>
             <button id="download-pdf" class="px-4 py-2 text-white bg-blue-400 rounded-lg hover:bg-blue-500">
                 <ion-icon name="cloud-download-outline" class="w-5 h-5 mr-2"></ion-icon>
                 Descargar PDF
@@ -27,6 +26,7 @@
     <div class="p-6 space-y-6 bg-white rounded-lg shadow-lg" id="content-to-print">
         <h1 class="mb-6 text-3xl font-bold text-center text-pink-700">Detalles de la Consulta</h1>
 
+        <!-- Información del Doctor y Paciente -->
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
                 <h2 class="text-xl font-semibold text-pink-600">Doctor</h2>
@@ -42,6 +42,7 @@
             </div>
         </div>
 
+        <!-- Otros Detalles de la Consulta -->
         <div class="space-y-4">
             <h2 class="text-xl font-semibold text-pink-600">Consulta</h2>
             <p><strong>Fecha y Hora de la Consulta:</strong> {{ $consulta->created_at->format('Y-m-d H:i') }}</p>
@@ -109,6 +110,7 @@
             </table>
         </div>
 
+        <!-- Servicios -->
         <div class="space-y-4">
             <h2 class="text-xl font-semibold text-pink-600">Servicios</h2>
             <table class="w-full text-left table-auto">
@@ -133,39 +135,39 @@
             </table>
         </div>
 
+        <!-- Impuestos y Total -->
         <div class="space-y-4">
-            <h2 class="text-xl font-semibold text-pink-600">Venta</h2>
-            @if($consulta->venta)
-            <table class="w-full text-left table-auto">
-                <thead class="text-pink-600 bg-pink-100">
-                    <tr>
-                        <th class="px-4 py-2">Servicio/Producto</th>
-                        <th class="px-4 py-2">Cantidad</th>
-                        <th class="px-4 py-2">Precio</th>
-                        <th class="px-4 py-2">Subtotal</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($consulta->venta->items as $item)
-                    <tr class="bg-pink-50">
-                        <td class="px-4 py-2">{{ $item->nombre }}</td>
-                        <td class="px-4 py-2">{{ $item->cantidad }}</td>
-                        <td class="px-4 py-2">{{ $item->precio }}</td>
-                        <td class="px-4 py-2">{{ $item->subtotal }}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-                <tfoot class="bg-pink-50">
-                    <tr>
-                        <td colspan="3" class="px-4 py-2 text-right"><strong>Total:</strong></td>
-                        <td class="px-4 py-2"><strong>{{ $consulta->venta->total }}</strong></td>
-                    </tr>
-                </tfoot>
-            </table>
-            @else
-            <p>No hay venta registrada para esta consulta.</p>
-            @endif
+            <h2 class="text-xl font-semibold text-pink-600">Total a Pagar</h2>
+            <div class="flex justify-end space-x-4">
+                <div>
+                    <p><strong>Subtotal:</strong></p>
+                    <p><strong>IVA (16%):</strong></p>
+                    <p><strong>Total:</strong></p>
+                </div>
+                <div class="text-right">
+                    <p>{{ number_format($consulta->venta->total, 2) }} MXN</p>
+                    <p>{{ number_format($consulta->venta->total * 0.16, 2) }} MXN</p>
+                    <p><strong>{{ number_format($consulta->venta->total * 1.16, 2) }} MXN</strong></p>
+                </div>
+            </div>
         </div>
+
+        <!-- Mensajes del Médico Colaborador -->
+        <!-- Mensajes del Médico Colaborador -->
+        <div class="space-y-4">
+            <h2 class="text-xl font-semibold text-pink-600">Mensajes del Médico Colaborador</h2>
+            @forelse($consulta->colaboraciones as $colaboracion)
+                @if($colaboracion->mensaje)
+                    <div class="p-4 bg-pink-100 border border-pink-200 rounded-lg">
+                        <p><strong>{{ $colaboracion->medicoColaborador->name }} {{ $colaboracion->medicoColaborador->apellido }}:</strong> {{ $colaboracion->mensaje }}</p>
+                        <p class="text-sm text-right text-gray-500">Enviado el {{ $colaboracion->updated_at->format('d/m/Y H:i') }}</p>
+                    </div>
+                @endif
+            @empty
+                <p>No hay mensajes del médico colaborador.</p>
+            @endforelse
+        </div>
+
     </div>
 </div>
 
@@ -189,7 +191,6 @@
             });
         });
     });
-
 
     document.getElementById('share-button').addEventListener('click', async () => {
         const shareData = {

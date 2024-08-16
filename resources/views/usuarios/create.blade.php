@@ -110,6 +110,7 @@
                                             <option value="Paciente">Paciente</option>
                                             <option value="Secretaria">Secretaria</option>
                                             <option value="Enfermera">Enfermera</option>
+                                            <option value="Medico_Colaborador">Medico Colaborador</option>
                                         </select>
                                     </div>
                                     <div class="flex items-center justify-end">

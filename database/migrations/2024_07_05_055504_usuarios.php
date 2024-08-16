@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('telefono')->nullable();
-            $table->enum('rol', ['Doctor', 'Paciente', 'Secretaria', 'Enfermera'])->default('Paciente');
+            $table->enum('rol', ['Doctor', 'Paciente', 'Secretaria', 'Enfermera','medico_colaborador'])->default('Paciente');
             $table->timestamps();
         });
     }

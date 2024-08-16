@@ -3,19 +3,23 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\User;
+use App\Models\Citas;
 use App\Models\Venta;
 use App\Models\Receta;
 use App\Models\Consulta;
-use App\Models\Citas;
 use App\Models\Doctores;
 use App\Models\Pacientes;
 use App\Models\Productos;
 use App\Models\Servicios;
 use App\Models\VentaItem;
 use Illuminate\View\View;
+use App\Models\Colaboracion;
 use Illuminate\Http\Request;
 use App\Models\SignosVitales;
 use App\Models\ConsultaServicio;
+use App\Models\Usuario;
+use Illuminate\Support\Facades\Auth;
 
 class ConsultaController extends Controller
 {
@@ -168,4 +172,70 @@ class ConsultaController extends Controller
         $consultas = Consulta::with(['paciente', 'doctor'])->get();
         return view('consultas.create', compact('consultas'));
     }
+
+
+
+    public function compartir($id)
+{
+    $consulta = Consulta::findOrFail($id);
+
+    // Obtener todos los médicos colaboradores, excluyendo al usuario actual
+    $medicosColaboradores = Usuario::where('rol', 'medico_colaborador')
+        ->where('id', '!=', Auth::id())
+        ->get();
+
+    return view('consultas.compartir', compact('consulta', 'medicosColaboradores'));
+}
+
+public function asignarColaboracion(Request $request, $id)
+{
+    $request->validate([
+        'medico_colaborador_id' => 'required|exists:usuarios,id',
+    ]);
+
+    // Crear la colaboración
+    Colaboracion::create([
+        'consulta_id' => $id,
+        'medico_colaborador_id' => $request->medico_colaborador_id,
+    ]);
+
+    return redirect()->route('consultas.show', $id)->with('success', 'Consulta compartida con éxito.');
+}
+
+public function verColaboracion($id)
+{
+    // Obtener la colaboración específica para el médico colaborador autenticado
+    $colaboracion = Colaboracion::where('consulta_id', $id)
+        ->where('medico_colaborador_id', Auth::id())
+        ->firstOrFail();
+
+    return view('consultas.verColaboracion', compact('colaboracion'));
+}
+
+public function enviarMensaje(Request $request, $id)
+{
+    // Validar y enviar el mensaje dentro de la colaboración
+    $request->validate([
+        'mensaje' => 'required|string',
+    ]);
+
+    // Encontrar la colaboración por ID
+    $colaboracion = Colaboracion::findOrFail($id);
+
+    // Actualizar la colaboración con el mensaje del médico colaborador
+    $colaboracion->update([
+        'mensaje' => $request->mensaje,
+    ]);
+
+    return redirect()->route('consultas.verColaboracion', $colaboracion->consulta_id)
+        ->with('success', 'Mensaje enviado con éxito.');
+}
+
+public function listarColaboraciones()
+{
+    // Obtener todas las colaboraciones asignadas al médico colaborador autenticado
+    $colaboraciones = Colaboracion::where('medico_colaborador_id', Auth::id())->get();
+
+    return view('consultas.colaboracionesIndex', compact('colaboraciones'));
+}
 }

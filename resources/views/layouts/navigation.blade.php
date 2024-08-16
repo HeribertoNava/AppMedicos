@@ -14,6 +14,12 @@
         </x-nav-link>
 
     <!-- Navigation Links -->
+@if (Auth::user()->hasRole('medico_colaborador'))
+    <x-nav-link :href="route('colaboraciones.index')" :active="request()->routeIs('colaboraciones.index')" class="px-4 py-2 text-white hover:text-gray-200 hover:bg-pink-600">
+        {{ __('Consultas') }}
+    </x-nav-link>
+@endif
+
 @if (Auth::user()->hasRole('Doctor'))
         <x-nav-link :href="route('doctores.index')" :active="request()->routeIs('doctores.index')" class="px-4 py-2 text-white hover:text-gray-200 hover:bg-pink-600">
             {{ __('Doctores') }}
