@@ -3,10 +3,12 @@
 @section('content')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
-<div class="flex items-center justify-center min-h-screen p-6 bg-gray-100">
+<div class="flex items-center justify-center min-h-screen bg-pink-50">
     <div class="container max-w-screen-lg mx-auto">
-        <div class="p-4 px-4 mb-6 bg-white rounded shadow-lg md:p-8">
-            <form action="{{ route('citas.store') }}" method="POST">
+        <div class="p-8 bg-white rounded-lg shadow-lg">
+            <h2 class="text-2xl font-bold text-center text-pink-600">Agendar Nueva Cita</h2>
+
+            <form action="{{ route('citas.store') }}" method="POST" class="mt-8">
                 @csrf
 
                 <!-- Mostrar errores de validación -->
@@ -20,11 +22,11 @@
                     </div>
                 @endif
 
-                <div class="grid grid-cols-1 gap-4 text-sm gap-y-2 lg:grid-cols-3">
+                <div class="grid grid-cols-1 gap-6 text-sm lg:grid-cols-2">
                     <!-- Selección de Paciente -->
-                    <div class="md:col-span-5">
-                        <label for="paciente_id">Paciente</label>
-                        <select name="paciente_id" id="paciente_id" class="w-full h-10 px-4 mt-1 border rounded bg-gray-50">
+                    <div>
+                        <label for="paciente_id" class="block font-semibold text-pink-600">Paciente</label>
+                        <select name="paciente_id" id="paciente_id" class="w-full h-10 px-4 mt-1 border rounded-lg bg-pink-50 focus:ring focus:ring-pink-200">
                             @foreach($pacientes as $paciente)
                                 <option value="{{ $paciente->id }}" {{ old('paciente_id') == $paciente->id ? 'selected' : '' }}>{{ $paciente->nombres }} {{ $paciente->apellidos }}</option>
                             @endforeach
@@ -36,9 +38,9 @@
                     </div>
 
                     <!-- Selección de Doctor -->
-                    <div class="md:col-span-5">
-                        <label for="doctor_id">Doctor</label>
-                        <select name="doctor_id" id="doctor_id" class="w-full h-10 px-4 mt-1 border rounded bg-gray-50">
+                    <div>
+                        <label for="doctor_id" class="block font-semibold text-pink-600">Doctor</label>
+                        <select name="doctor_id" id="doctor_id" class="w-full h-10 px-4 mt-1 border rounded-lg bg-pink-50 focus:ring focus:ring-pink-200">
                             @foreach($doctores as $doctor)
                                 <option value="{{ $doctor->id }}" {{ old('doctor_id') == $doctor->id ? 'selected' : '' }}>{{ $doctor->nombres }} {{ $doctor->apellidos }}</option>
                             @endforeach
@@ -50,18 +52,18 @@
                     </div>
 
                     <!-- Selección de Fecha -->
-                    <div class="md:col-span-3">
-                        <label for="fecha">Fecha</label>
-                        <input type="date" name="fecha" id="fecha" class="w-full h-10 px-4 mt-1 border rounded bg-gray-50" min="{{ date('Y-m-d') }}" value="{{ old('fecha') }}" required />
+                    <div>
+                        <label for="fecha" class="block font-semibold text-pink-600">Fecha</label>
+                        <input type="date" name="fecha" id="fecha" class="w-full h-10 px-4 mt-1 border rounded-lg bg-pink-50 focus:ring focus:ring-pink-200" min="{{ date('Y-m-d') }}" value="{{ old('fecha') }}" required />
                         @error('fecha')
                             <p class="text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <!-- Selección de Rango de Horas -->
-                    <div class="md:col-span-2">
-                        <label for="rango_horas">Rango de Horas</label>
-                        <select name="rango_horas" id="rango_horas" class="w-full h-10 px-4 mt-1 border rounded bg-gray-50" required>
+                    <div>
+                        <label for="rango_horas" class="block font-semibold text-pink-600">Rango de Horas</label>
+                        <select name="rango_horas" id="rango_horas" class="w-full h-10 px-4 mt-1 border rounded-lg bg-pink-50 focus:ring focus:ring-pink-200" required>
                             <option value="09:00-11:00" {{ old('rango_horas') == '09:00-11:00' ? 'selected' : '' }}>09:00 am - 11:00 am</option>
                             <option value="12:00-15:00" {{ old('rango_horas') == '12:00-15:00' ? 'selected' : '' }}>12:00 pm - 3:00 pm</option>
                             <option value="15:00-17:00" {{ old('rango_horas') == '15:00-17:00' ? 'selected' : '' }}>03:00 pm - 5:00 pm</option>
@@ -69,9 +71,9 @@
                     </div>
 
                     <!-- Selección de Horas Disponibles -->
-                    <div class="md:col-span-5">
-                        <label for="hora">Hora</label>
-                        <div id="horas_disponibles" class="grid grid-cols-2 gap-2">
+                    <div class="lg:col-span-2">
+                        <label for="hora" class="block font-semibold text-pink-600">Hora</label>
+                        <div id="horas_disponibles" class="grid grid-cols-2 gap-2 mt-2">
                             <!-- Horas disponibles se insertarán aquí -->
                         </div>
                         @error('hora')
@@ -83,16 +85,16 @@
                     <input type="hidden" name="hora" id="hora_hidden">
 
                     <!-- Selección de Estado -->
-                    <div class="md:col-span-5">
-                        <label for="estado">Estado</label>
-                        <select name="estado" id="estado" class="w-full h-10 px-4 mt-1 border rounded bg-gray-50">
+                    <div>
+                        <label for="estado" class="block font-semibold text-pink-600">Estado</label>
+                        <select name="estado" id="estado" class="w-full h-10 px-4 mt-1 border rounded-lg bg-pink-50 focus:ring focus:ring-pink-200">
                             <option value="En proceso" {{ old('estado') == 'En proceso' ? 'selected' : '' }}>En proceso</option>
                         </select>
                     </div>
 
                     <!-- Botón de enviar -->
-                    <div class="text-right md:col-span-5">
-                        <button type="submit" class="px-4 py-2 font-bold text-black rounded" style="background-color: #daffef; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#247b7b'" onmouseout="this.style.backgroundColor='#daffef'">Agendar</button>
+                    <div class="text-right lg:col-span-2">
+                        <button type="submit" class="px-6 py-2 font-bold text-white bg-pink-600 rounded-lg hover:bg-pink-700">Agendar</button>
                     </div>
                 </div>
             </form>
@@ -138,6 +140,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         label.textContent = hora;
 
                         var div = document.createElement('div');
+                        div.classList.add('flex', 'items-center', 'space-x-2');
                         div.appendChild(radio);
                         div.appendChild(label);
 
@@ -182,7 +185,5 @@ document.addEventListener('DOMContentLoaded', function() {
         return times;
     }
 });
-
-
 </script>
 @endsection

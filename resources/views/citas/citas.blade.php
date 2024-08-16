@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+
+<h1 class="mb-6 text-3xl font-bold text-center text-pink-600">Agenda Medica</h1>
+
 <script src="{{ asset('assets/fullcalendar/dist/index.global.js') }}"></script>
 
 <!-- Botones para agendar una nueva cita y ver la lista de citas -->

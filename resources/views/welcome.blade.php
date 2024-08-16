@@ -9,31 +9,35 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
     <!-- Styles -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link rel="stylesheet" href="{{ asset('css/welcome.css') }}">
 </head>
-<body class="antialiased">
-    <nav class="fixed top-0 z-20 w-full bg-white border-b border-gray-200 white:bg-gray-900 start-0 dark:border-gray-600">
-        <div class="flex flex-wrap items-center justify-between max-w-screen-xl p-4 mx-auto">
-            <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
-                <img src="{{ asset('images/logo.png') }}" class="h-8" alt="Health Plus Logo">
-                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-black">Mi proyecto</span>
+<body class="antialiased bg-pink-50">
+
+    <nav class="fixed top-0 z-20 w-full bg-white shadow-lg">
+        <div class="flex items-center justify-between max-w-screen-xl p-4 mx-auto">
+            <a href="#" class="flex items-center space-x-3">
+                <img src="{{ asset('images/logo.png') }}" class="h-10" alt="Health Plus Logo">
+                <span class="text-2xl font-bold text-pink-600">Health</span>
             </a>
-            <div class="flex space-x-3 md:order-2 md:space-x-0 rtl:space-x-reverse">
-                <a href="{{ route('login') }}" class="px-4 py-2 text-sm font-medium text-center text-black rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-blue-800" style="background-color: #fffefe; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#d4d4d4'" onmouseout="this.style.backgroundColor='#fffefe'">Log in</a>
+            <div class="flex space-x-3">
+                <a href="{{ route('login') }}" class="px-4 py-2 text-sm font-semibold text-white bg-pink-600 rounded-lg hover:bg-pink-700 focus:ring-4 focus:ring-pink-300">Log in</a>
             </div>
         </div>
     </nav>
 
-    <header class="hero-section">
-        <div class="content">
-            <h1>Bienvenidos a mi proyecto</h1>
+    <header class="relative flex items-center justify-center h-screen bg-no-repeat bg-cover" style="background-image: url('{{ asset('images/doctora.jpg') }}');">
+        <div class="absolute inset-0 bg-black opacity-40"></div> <!-- Sombra para mejorar la legibilidad del texto -->
+        <div class="relative z-10 flex flex-col items-center text-center text-white">
+            <h1 class="mb-6 text-5xl font-extrabold tracking-tight text-shadow-lg lg:text-6xl">Bienvenidos a Health</h1>
+            <p class="mb-8 text-xl font-medium text-shadow-md lg:text-2xl">Cuidamos de tu salud con dedicación y experiencia.</p>
+
+
+            <a href="{{ route('login') }}" class="px-6 py-3 font-semibold text-pink-600 bg-white rounded-full hover:bg-gray-100">Comienza Ahora</a>
         </div>
-        <div class="image">
-<!--   <img src="{{ asset('') }}" alt="Health Expert"> -->
-        </div>
+
     </header>
+
 </body>
 </html>

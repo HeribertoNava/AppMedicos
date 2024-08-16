@@ -31,7 +31,7 @@
                         <td class="px-4 py-2">{{ $usuario->email }}</td>
                         <td class="px-4 py-2">{{ $usuario->telefono }}</td>
                         <td class="px-4 py-2">{{ $usuario->rol }}</td>
-                        <td class="px-4 py-2">
+                        <td class="px-4 py-2 space-x-2">
                             <a href="{{ route('usuarios.show', $usuario->id) }}" class="inline-flex items-center px-3 py-1 text-sm font-medium text-white bg-blue-500 rounded hover:bg-blue-400">
                                 <ion-icon name="eye-outline" class="mr-1"></ion-icon> Ver
                             </a>
